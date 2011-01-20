@@ -19,6 +19,7 @@ class Controller_Browse extends BaseController {
 		$actives = _post("active");
 		$passives =  _post("passive");
 		$reminders =  _post("reminder");
+		
 			
 		// The array of check-boxes we get from the POST are only those of the checked ones with value 'on'.
 		// So, we have to manually create the entitre arrays with right values.
@@ -60,7 +61,7 @@ class Controller_Browse extends BaseController {
          $c = new CdrActivationManager();
          $c->update($ids, $actives_final, $passives_final, $reminders_final);
          
-         $this->viewBean->_view = "view.php";
+         $this-> _action_default();
     }
 
     function _action_undecorated() {

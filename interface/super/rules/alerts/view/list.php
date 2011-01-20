@@ -1,4 +1,5 @@
-<form name="cdralertmgr" method="post" action="/interface/super/rules/alerts/index.php?action=submit" >
+
+<form name="cdralertmgr" method="post" action="../../../../interface/super/rules/alerts/index.php?action=submit" >
 <table cellpadding="1" cellspacing="0" class="showborder">
         <tr class="showborder_head">
                 <th width="250px">Title</th>
@@ -33,7 +34,7 @@
                 <?php }else {?>
 	                <td><input type="checkbox" name="reminder[<?php echo($index)?>]]"></td>
 				<?php } ?>                
-                <td><input style="display:none" name="id[<?php echo($index)?>]]" value="{$rule->get_id()}" /></td>								
+                <td><input style="display:none" name="id[<?php echo($index)?>]]" value=<?php out($rule->get_id()); ?> /></td>								
         </tr>
 		<?php }?>
 </table>
