@@ -38,6 +38,14 @@ function base_dir() {
     return dirname(__FILE__) . "/../";
 }
 
+function library_dir() {
+    return base_dir() . '/library';
+}
+
+function library_src( $file ) {
+    return library_dir() . "/$file";
+}
+
 function js_src( $file ) {
     echo _base_url() . '/www/js/' . $file;
 }

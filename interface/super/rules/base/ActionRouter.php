@@ -1,7 +1,11 @@
 <?php
 
 /**
- * This is a very simple action routing class for a given controller:
+ * This is a very simple action routing class for a given controller. Given
+ * a controller and action (typically from ControllerRouter), it goes through
+ * these steps to find out which function in that controller should be invoked:
+ *
+ * todo - document these steps
  * 
  * @author aron
  */
@@ -13,12 +17,12 @@ class ActionRouter {
     var $appRoot;
     var $action;
 
-    function __construct($controller, $action, $path, $appRoot, $webRoot) {
+    function __construct($controller, $action, $path) {
         $this->controller = $controller;
         $this->action = $action;
         $this->path = $path;
-        $this->appRoot = $appRoot;
-        $this->webRoot = $webRoot;
+        $this->appRoot = base_dir();
+        $this->webRoot = $GLOBALS['webroot'];
     }
 
     function route() {

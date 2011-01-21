@@ -29,11 +29,9 @@ class ControllerRouter {
         $actionRouter = new ActionRouter(
                 $controllerInstance,
                 $action,
-                $controllerDir,
-                $GLOBALS['srcdir'] . "/../",
-                $GLOBALS['webroot']
+                $controllerDir
         );
-        
+
         $actionRouter->route();
     }
     

@@ -4,8 +4,6 @@ require_once( src_dir() . "/clinical_rules.php");
 class Controller_browse extends BaseController {
 
     function _action_list() {
-        $this->viewBean->name = "Aron";
-        $this->viewBean->age = 35;
         $this->set_view( "list.php" );
     }
 

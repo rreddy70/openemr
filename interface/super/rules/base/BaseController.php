@@ -12,6 +12,8 @@
 abstract class BaseController {
 
     var $viewBean;
+    var $ruleManager;
+
     public function _action_error() {
         $this->viewBean->_view = "error.php";
     }
@@ -41,6 +43,17 @@ abstract class BaseController {
 
     public function redirect( $redirect ) {
         $this->viewBean->_redirect = $redirect;
+    }
+
+    /**
+     *
+     * @return RuleManager
+     */
+    public function getRuleManager() {
+        if ( !$this->ruleManager ) {
+            $this->ruleManager = new RuleManager();
+        }
+        return $this->ruleManager;
     }
 
 }
