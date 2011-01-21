@@ -33,7 +33,7 @@ class ControllerRouter {
                 $GLOBALS['srcdir'] . "/../",
                 $GLOBALS['webroot']
         );
-        
+
         $actionRouter->route();
     }
     

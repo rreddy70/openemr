@@ -1,4 +1,5 @@
-<form name="cdralertmgr" method="post" action="index.php?action=alerts!submit" >
+
+<form name="cdralertmgr" method="post" action="../../../../interface/super/rules/alerts/index.php?action=submit" >
 <table cellpadding="1" cellspacing="0" class="showborder">
         <tr class="showborder_head">
                 <th width="250px">Title</th>

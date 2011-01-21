@@ -4,8 +4,8 @@
 
 **************************************************************************/
 
-require_once( "CdrHelper.class.php");
-require_once( $GLOBALS['fileroot'] . "/library/clinical_rules.php" );
+require_once( "CDRHelper.class.php");
+require_once ($GLOBALS['fileroot'] . "/library/clinical_rules.php");
 
 /**
  * class CdrActivationManager
