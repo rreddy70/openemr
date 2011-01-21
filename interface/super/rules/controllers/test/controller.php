@@ -1,38 +1,33 @@
 <?php
-class Controller_Browse extends BaseController {
+class Controller_test extends BaseController {
 
-    function _action_list() {
+    function _action_start() {
         $this->viewBean->name = "Aron";
         $this->viewBean->age = 35;
 
-        ///
-        $this->viewBean->_view = "list.php";
+        $this->set_view( "test.php" );
     }
 
     function _action_submit() {
-
         $this->viewBean->name = _post("name");
         $this->viewBean->age = _post("age");
 
-        ///
-        $this->viewBean->_view = "view.php";
+        $this->set_view( "view.php" );
     }
 
     function _action_undecorated() {
-        $this->viewBean->_view = "view.php";
-        $this->viewBean->_template = "undecorated.php";
+        $this->set_view( "view.php", "undecorated.php" );
     }
 
     function _action_forward() {
         $this->viewBean->name = "(this comes from the server!) " . " " . _post("name") ;
         $this->viewBean->age = 213 + _post("age");
 
-        ///
-        $this->viewBean->_forward = "undecorated";
+        $this->forward("undecorated");
     }
 
     function _action_yahoo() {
-        $this->viewBean->_redirect = "http://www.yahoo.com";
+        $this->redirect("http://www.yahoo.com");
     }
 
     function _action_json() {

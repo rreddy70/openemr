@@ -11,17 +11,22 @@ class ActionRouter {
     var $path;
     var $webRoot;
     var $appRoot;
+    var $action;
 
-    function __construct($controller, $path, $appRoot, $webRoot) {
+    function __construct($controller, $action, $path, $appRoot, $webRoot) {
         $this->controller = $controller;
+        $this->action = $action;
         $this->path = $path;
         $this->appRoot = $appRoot;
         $this->webRoot = $webRoot;
     }
 
     function route() {
-        $action = _get('action', 'default');
-        $result = $this->perform($action);
+        if ( !$this->action ) {
+            $this->action = "default";
+        }
+
+        $result = $this->perform($this->action);
 
         $forward = $result->_forward;
         if ($forward) {
@@ -31,7 +36,7 @@ class ActionRouter {
 
         $_redirect = $result->_redirect;
         if ($_redirect) {
-            $baseTemplatesDir = _base_dir() . "base/template";
+            $baseTemplatesDir = base_dir() . "base/template";
             require($baseTemplatesDir . "/redirect.php");
         }
     }
@@ -49,7 +54,7 @@ class ActionRouter {
         $view_location = $this->path . "/view/" . $viewName;
         if ( !is_file($view_location) ) {
             // try common
-            $view_location = _base_dir() . "base/view/" . $viewName;
+            $view_location = base_dir() . "base/view/" . $viewName;
         }
 
         if ( !is_file($view_location) ) {
@@ -75,7 +80,7 @@ class ActionRouter {
 
         // try common
         if ( !is_file($template_location) ) {
-            $template_location = _base_dir() . "base/template/" . $templateName;
+            $template_location = base_dir() . "base/template/" . $templateName;
         }
 
         if ( is_file($template_location) ) {
@@ -83,7 +88,7 @@ class ActionRouter {
             return $template_location;
         } else {
             // otherwise use the basic template
-            $baseTemplatesDir = _base_dir() . "base/template";
+            $baseTemplatesDir = base_dir() . "base/template";
             return $baseTemplatesDir . "/basic.php";
         }
     }

@@ -11,8 +11,12 @@
     forwarded to an action with an undecorated view.
 </p>
 
-
 <p>
     Click <a href="/interface/super/rules/browse/index.php?action=yahoo">here</a> to be
     redirected to Yahoo.
 </p>
+
+<p>
+    Click <a href="/interface/super/rules/browse/index.php?action=json">here</a> to get json.
+</p>
+

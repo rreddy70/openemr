@@ -30,8 +30,31 @@ function _base_url() {
     return $GLOBALS['webroot'] . '/interface/super/rules';
 }
 
-function _base_dir() {
+function src_dir() {
+    return $GLOBALS['srcdir'];
+}
+
+function base_dir() {
     return dirname(__FILE__) . "/../";
+}
+
+function js_src( $file ) {
+    echo _base_url() . '/www/js/' . $file;
+}
+
+function css_src( $file ) {
+    echo _base_url() . '/www/css/' . $file;
+}
+
+function controller_basedir() {
+    return realpath( base_dir() . '/controllers/' );
+}
+function controller_dir( $controller ) {
+    $dir = controller_basedir() . '/'. $controller;
+    if ( realpath( $dir . '/../') != controller_basedir() )  {
+        throw Exception("Invalid controller '$controller'");
+    }
+    return $dir;
 }
 
 ?>
