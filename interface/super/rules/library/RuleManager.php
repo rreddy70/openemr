@@ -13,6 +13,14 @@ class RuleManager {
            FROM clinical_rules cr
            JOIN list_options lo ON cr.id = lo.option_id";
 
+    const SQL_RULE_REMINDER_INTERVAL =
+    "SELECT id,
+            method,
+            method_detail,
+            value
+       FROM rule_reminder
+      WHERE id = ?";
+    
     /**
      *
      * @param <type> $id
@@ -20,14 +28,13 @@ class RuleManager {
      * @return Rule
      */
     function getRule($id, $pid = 0) {
-
+        // xxx todo move this logic into a DAO
         $ruleResult = sqlFetchArray( sqlStatement(
                 self::SQL_RULE_DETAIL . " WHERE id = ? AND pid = ?",
                 array($id, $pid))
         );
 
         $rule = new Rule($id, $ruleResult['title']);
-
         // populate rule types
         if ($ruleResult['active_alert_flag'] == 1) {
             $rule->addRuleType(RuleType::ActiveAlert);
@@ -45,7 +52,33 @@ class RuleManager {
             $rule->addRuleType(RuleType::PatientReminder);
         }
 
+        $this->fillRuleReminderIntervals( $rule );
+
         return $rule;
+    }
+
+    /**
+     *
+     * @param Rule $rule
+     */
+    function fillRuleReminderIntervals( $rule ) {
+        $stmt = sqlStatement( self::SQL_RULE_REMINDER_INTERVAL, array( $rule->id ) );
+        $reminderInterval = new ReminderIntervals();
+
+        for($iter=0; $row=sqlFetchArray($stmt); $iter++) {
+            $amount = $row['value'];
+            $unit = TimeUnit::from($row['method_detail']);
+            $methodParts = explode( '_', $row['method'] );
+            $type = ReminderIntervalType::from( $methodParts[0] );
+            $range = ReminderIntervalRange::from( $methodParts[2] );
+
+            if ( !is_null($type) && !is_null($range) && !is_null($unit) ) {
+                $detail = new ReminderIntervalDetail( $type, $range, $amount, $unit );
+                $reminderInterval->addDetail($detail);
+            } 
+        }
+
+        $rule->setReminderIntervals( $reminderInterval );
     }
 
 }

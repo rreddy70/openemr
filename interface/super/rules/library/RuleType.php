@@ -1,6 +1,7 @@
 <?php
 /**
  * Enumerates rule types
+ * todo turn this into a real enum
  * @author aron
  */
 class RuleType {

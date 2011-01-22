@@ -14,6 +14,13 @@ class Rule {
     var $id;
     var $title;
 
+    /**
+     *
+     * @var ReminderIntervals
+     */
+    var $reminderIntervals;
+
+
     function __construct( $id, $title='', $ruleTypes=array() ) {
         $this->id = $id;
         $this->title = $title;
@@ -52,6 +59,13 @@ class Rule {
 
     function isReminder() {
         return $this->hasRuleType( RuleType::PatientReminder );
+    }
+
+    /**
+     * @param ReminderIntervals $reminderIntervals
+     */
+    function setReminderIntervals( $reminderIntervals ) {
+        $this->reminderIntervals = $reminderIntervals;
     }
 
 }
