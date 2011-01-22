@@ -35,12 +35,12 @@ class TimeUnit {
 
     private static function map() {
         $map = array(
-            'minute'    =>  new ReminderIntervalType( 'minute', 'Minute(s)' ),
-            'hour'      =>  new ReminderIntervalType( 'hour', 'Minute(s)' ),
-            'day'       =>  new ReminderIntervalType( 'day', 'Day(s)' ),
-            'week'      =>  new ReminderIntervalType( 'week', 'Week(s)' ),
-            'month'     =>  new ReminderIntervalType( 'month', 'Month(s)' ),
-            'year'      =>  new ReminderIntervalType( 'year', 'Year(s)' )
+            'minute'    =>  new ReminderIntervalType( 'minute', 'Minutes' ),
+            'hour'      =>  new ReminderIntervalType( 'hour', 'Minutes' ),
+            'day'       =>  new ReminderIntervalType( 'day', 'Days' ),
+            'week'      =>  new ReminderIntervalType( 'week', 'Weeks' ),
+            'month'     =>  new ReminderIntervalType( 'month', 'Months' ),
+            'year'      =>  new ReminderIntervalType( 'year', 'Years' )
         );
         return $map;
     }

@@ -24,20 +24,42 @@
     </p>
 
     <!-- reminder intervals -->
+    <?php $intervals = $viewBean->rule->reminderIntervals ?>
+    <?php if ( $intervals) { ?>
     <p>
         <span><?php out('Reminder Intervals'); ?></span>
         <span>
-            <?php $intervals = $viewBean->rule->reminderIntervals ?>
-            <?php foreach($intervals->getTypes() as $type) {?>
-                <div>
-                    <p><?php out($type->lbl) ?></p>
-                    <?php foreach( $intervals->getDetailFor( $type ) as $detail ) {?>
-                    <span><?php out($detail->intervalRange->lbl) ?>:</span>
-                    <span><?php out($detail->amount) ?></span>
-                    <span><?php out($detail->timeUnit->lbl) ?></span>
-                    <?php } ?>
-                </div>
-            <?php } ?>
+                <?php foreach($intervals->getTypes() as $type) {?>
+                    <div>
+                        <p><?php out($type->lbl) ?></p>
+                        <?php foreach( $intervals->getDetailFor( $type ) as $detail ) {?>
+                        <span><?php out($detail->intervalRange->lbl) ?>:</span>
+                        <span><?php out($detail->amount) ?></span>
+                        <span><?php out($detail->timeUnit->lbl) ?></span>
+                        <?php } ?>
+                    </div>
+                <?php } ?>
         </span>
     </p>
+    <?php } ?>
+
+    <!-- rule filter criteria -->
+    <?php $filters = $viewBean->rule->filters ?>
+    <?php if ( $filters ) { ?>
+    <p>
+        <span><?php out('Demographic filter criteria'); ?></span>
+        <p>
+            <?php foreach($filters->criteria as $criteria) { ?>
+                <!-- title -->
+                <div>
+                    <span><?php out( $criteria->getTitle() ) ?></span>
+                </div>
+                <!-- requirements -->
+                <div>
+                    <span><?php out( $criteria->getRequirements() ) ?></span>
+                </div>
+            <?php } ?>
+        </p>
+    </p>
+    <?php } ?>
 </div>

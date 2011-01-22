@@ -1,7 +1,13 @@
 <?php
 
-function out( $txt ) {
-    echo htmlspecialchars( xl( $txt ), ENT_NOQUOTES);
+function out( $txt, $print=true) {
+    $val = htmlspecialchars( xl( $txt ), ENT_NOQUOTES);
+    if ($print) {
+        echo $val;
+    } else {
+        return $val;
+    }
+
 }
 
 /**

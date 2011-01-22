@@ -20,6 +20,10 @@ class Rule {
      */
     var $reminderIntervals;
 
+    /**
+     * @var RuleFilters
+     */
+    var $filters;
 
     function __construct( $id, $title='', $ruleTypes=array() ) {
         $this->id = $id;
@@ -68,5 +72,12 @@ class Rule {
         $this->reminderIntervals = $reminderIntervals;
     }
 
+    /**
+     *
+     * @param RuleFilters $ruleFilters 
+     */
+    function setRuleFilters( $ruleFilters ) {
+        $this->filters = $ruleFilters;
+    }
 }
 ?>
