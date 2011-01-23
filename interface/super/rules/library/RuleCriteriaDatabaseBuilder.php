@@ -29,7 +29,15 @@ class RuleCriteriaDatabaseBuilder extends RuleCriteriaBuilder {
             return new RuleCriteriaDatabaseBucket( $category, $item, $completed,
                     $frequencyComparator, $frequency );
         } else {
-            return new RuleCriteriaDatabaseCustom();
+            $table = $exploded[1];
+            $column = $exploded[2];
+            $valueComparator = $exploded[3];
+            $value = $exploded[4];
+            $frequencyComparator = $exploded[5];
+            $frequency = $exploded[6];
+            return new RuleCriteriaDatabaseCustom( $table, $column, 
+                    $valueComparator, $value,
+                    $frequencyComparator, $frequency );
         }
 
         return null;

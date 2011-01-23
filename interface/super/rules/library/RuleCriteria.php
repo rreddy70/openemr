@@ -27,16 +27,35 @@ abstract class RuleCriteria {
      */
     var $value;
 
-    function getCharacteristics() {
-        $characteristics = $this->optional ? "Optional" : "Required";
-        $characteristics .= " ";
-        $characteristics .= $this->inclusion ? "Inclusion" : "Exclusion";
+    /**
+     * @var string
+     */
+    var $interval;
 
-        return out( $characteristics, false );
+    /**
+     * @var TimeUnit
+     */
+    var $intervalType;
+
+    function getCharacteristics() {
+        $characteristics = $this->optional ? out ( "Optional", false ) : out ( "Required", false );
+        $characteristics .= " ";
+        $characteristics .= $this->inclusion ? out( "Inclusion", false ) : out( "Exclusion", false );
+
+        return $characteristics;
     }
 
     abstract function getRequirements();
+    
     abstract function getTitle();
+
+    function getInterval() {
+        if ( is_null($this->interval) || is_null( $this->intervalType ) ) {
+            return null;
+        }
+        return $this->interval . " x " . " "
+             . $this->intervalType->lbl;
+    }
 
     protected function getLabel( $value ) {
         // first try layout_options
@@ -59,6 +78,24 @@ abstract class RuleCriteria {
 
         // if in neither place, default to the passed-in value
         return $value;
+    }
+
+    protected function decodeComparator( $comparator ) {
+        switch ( $comparator ) {
+            case "eq": return "exactly";
+                break;
+            case "ne": return "not";
+                break;
+            case "gt": return "more than";
+                break;
+            case "lt": return "less than";
+                break;
+            case "ge": return "more than or exactly";
+                break;
+            case "le": return "less than or exactly";
+                break;
+        }
+        return "";
     }
 
 }

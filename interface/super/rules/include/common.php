@@ -1,13 +1,12 @@
 <?php
 
-function out( $txt, $print=true) {
+function out( $txt, $print=true ) {
     $val = htmlspecialchars( xl( $txt ), ENT_NOQUOTES);
     if ($print) {
         echo $val;
     } else {
         return $val;
     }
-
 }
 
 /**

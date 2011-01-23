@@ -1,7 +1,9 @@
 <?php
-require("../../globals.php");
+// for security
 $fake_register_globals=false;
 $sanitize_all_escapes=true;
+
+require("../../globals.php");
 
 require_once("ui.php");
 require_once("common.php");

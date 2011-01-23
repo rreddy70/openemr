@@ -24,10 +24,15 @@ class RuleManager {
       WHERE id = ?";
 
     const SQL_RULE_FILTER =
-    "SELECT * FROM rule_filter where id = ?";
+    "SELECT * FROM rule_filter WHERE id = ?";
 
     const SQL_RULE_TARGET =
-    "SELECT * FROM rule_target where id = ?";
+    "SELECT * FROM rule_target WHERE id = ?";
+
+    const SQL_RULE_INTERVAL =
+    "SELECT * FROM rule_target 
+     WHERE method = 'target_interval'
+       AND id = ?";
 
     var $filterCriteriaFactory;
     var $targetCriteriaFactory;
@@ -85,39 +90,42 @@ class RuleManager {
      * @param Rule $rule
      */
     function fillRuleFilterCriteria( $rule ) {
-        $stmt = sqlStatement( self::SQL_RULE_FILTER, array( $rule->id ) );
-        $ruleFilters = new RuleFilters();
-        $rule->setRuleFilters($ruleFilters);
-
-        for($iter=0; $row=sqlFetchArray($stmt); $iter++) {
-            $method = $row['method'];
-            $methodDetail = $row['method_detail'];
-            $value = $row['value'];
-            $inclusion = $row['include_flag'] == 1;
-            $optional = $row['required_flag'] == 1;
-
-            $criteria = $this->filterCriteriaFactory->build( $ruleId, $inclusion, $optional,
-                    $method, $methodDetail, $value );
-
-            
-            if ( is_null($criteria) ) {
-                // unrecognized critera
-                continue;
+        $criterion = $this->gatherCriteria($rule, self::SQL_RULE_FILTER,
+                $this->filterCriteriaFactory);
+        if ( sizeof( $criterion ) > 0 ) {
+            $ruleFilters = new RuleFilters();
+            $rule->setRuleFilters($ruleFilters);
+            foreach( $criterion as $criteria ) {
+                $ruleFilters->add( $criteria );
             }
-
-            // else
-            $ruleFilters->add( $criteria );
         }
     }
 
     /**
-     * xxx todo console this with the rule filter method before we're done, this is duplicate code!!
      * @param Rule $rule
      */
     function fillRuleTargetCriteria( $rule ) {
-        $stmt = sqlStatement( self::SQL_RULE_TARGET, array( $rule->id ) );
-        $ruleTargets = new RuleTargets();
-        $rule->setRuleTargets($ruleTargets);
+        $criterion = $this->gatherCriteria($rule, self::SQL_RULE_TARGET,
+                $this->targetCriteriaFactory);
+        if ( sizeof( $criterion ) > 0 ) {
+            $ruleTargets = new RuleTargets();
+            $rule->setRuleTargets($ruleTargets);
+            foreach( $criterion as $criteria ) {
+                $ruleTargets->add( $criteria );
+            }    
+        }
+
+    }
+
+    /**
+     *
+     * @param Rule $rule
+     * @param string $criteraSrcSql
+     * @param RuleCriteriaFactory $factory
+     */
+    private function gatherCriteria( $rule, $criteraSrcSql, $factory ) {
+        $stmt = sqlStatement( $criteraSrcSql, array( $rule->id ) );
+        $criterion = array();
 
         for($iter=0; $row=sqlFetchArray($stmt); $iter++) {
             $method = $row['method'];
@@ -126,7 +134,7 @@ class RuleManager {
             $inclusion = $row['include_flag'] == 1;
             $optional = $row['required_flag'] == 1;
 
-            $criteria = $this->targetCriteriaFactory->build( $ruleId, $inclusion, $optional,
+            $criteria = $factory->build( $rule->id, $inclusion, $optional,
                     $method, $methodDetail, $value );
 
 
@@ -135,9 +143,18 @@ class RuleManager {
                 continue;
             }
 
+            // get interval
+            $intervalSql = sqlStatement( self::SQL_RULE_INTERVAL, array($rule->id) );
+            if (sqlNumRows($intervalSql) > 0) {
+                $result = sqlFetchArray( $intervalSql );
+                $criteria->interval = $result['interval'];
+                $criteria->intervalType = TimeUnit::from( $result['value'] );
+            }
+
             // else
-            $ruleTargets->add( $criteria );
+            $criterion[] = $criteria;
         }
+        return $criterion;
     }
 
     /**
@@ -166,6 +183,7 @@ class RuleManager {
             $rule->setReminderIntervals( $reminderInterval );
         }
     }
+
 
 }
 ?>

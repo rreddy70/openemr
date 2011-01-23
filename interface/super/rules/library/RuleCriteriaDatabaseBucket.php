@@ -26,35 +26,17 @@ class RuleCriteriaDatabaseBucket extends RuleCriteria {
     }
 
     function getRequirements() {
-        $requirements .= out( "Completed", false );
-        $requirements .= ": " . out( $this->completed ? "Yes" : "No", false );
+        $requirements .= out( "Completed", false ) . ": ";
+        $requirements .= $this->completed ? out( "Yes", false ) : out( "No", false );
         $requirements .= " | ";
-        $requirements .= out( "Frequency", false );
-        $requirements .= ": " . $this->decode( $this->frequencyComparator ) . " "
-                              . $this->frequency . " " . out( "times", false );
+        $requirements .= out( "Frequency", false ) . ": ";
+        $requirements .= $this->decodeComparator( $this->frequencyComparator ) . " "
+                       . $this->frequency . " ";
         return $requirements;
     }
 
     function getTitle() {
         return $this->getLabel($this->category) . " - " . $this->getLabel($this->item);
-    }
-
-    protected function decode( $comparator ) {
-        switch ( $comparator ) {
-            case "eq": return "exactly";
-                break;
-            case "ne": return "not";
-                break;
-            case "gt": return "more than";
-                break;
-            case "lt": return "less than";
-                break;
-            case "ge": return "more than or exactly";
-                break;
-            case "le": return "less than or exactly";
-                break;
-        }
-        return "";
     }
 
 }
