@@ -34,6 +34,10 @@ class RuleManager {
      WHERE method = 'target_interval'
        AND id = ?";
 
+    const SQL_RULE_ACTIONS =
+    "SELECT * FROM rule_action
+     WHERE id = ?";
+
     var $filterCriteriaFactory;
     var $targetCriteriaFactory;
 
@@ -81,6 +85,9 @@ class RuleManager {
 
         //
         $this->fillRuleTargetCriteria( $rule );
+
+        //
+        $this->fillRuleActions( $rule );
 
         return $rule;
     }
@@ -184,6 +191,29 @@ class RuleManager {
         }
     }
 
+        /**
+     *
+     * @param Rule $rule
+     */
+    function fillRuleActions( $rule ) {
+        $stmt = sqlStatement( self::SQL_RULE_ACTIONS, array( $rule->id ) );
+        $actions = new RuleActions();
+
+        $hasActions = false;
+
+        for($iter=0; $row=sqlFetchArray($stmt); $iter++) {
+            $action = new RuleAction();
+            $action->category = $row['category'];
+            $action->item = $row['item'];
+            $actions->add($action);
+            $hasActions = true;
+        }
+
+        if ( $hasActions ) {
+            $rule->setRuleActions( $actions );
+        }
+
+    }
 
 }
 ?>

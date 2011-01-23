@@ -30,6 +30,11 @@ class Rule {
      */
     var $targets;
 
+    /**
+     * @var RuleActions
+     */
+    var $actions;
+
     function __construct( $id, $title='', $ruleTypes=array() ) {
         $this->id = $id;
         $this->title = $title;
@@ -91,6 +96,13 @@ class Rule {
      */
     function setRuleTargets( $ruleTargets ) {
         $this->targets = $ruleTargets;
+    }
+
+    /**
+     * @param RuleActions $actions
+     */
+    function setRuleActions( $actions ) {
+        $this->actions = $actions;
     }
 }
 ?>

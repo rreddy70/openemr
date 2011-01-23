@@ -89,4 +89,23 @@
     </div>
     <?php } ?>
 
+    <!-- rule actions -->
+    <?php $actions = $rule->actions; if ( $actions) { ?>
+    <div class="section text">
+        <p class="header"><?php out('Actions'); ?></p>
+        <p>
+            <div>
+                <u><?php out("Category/Title") ?></u>
+            </div>
+
+            <div>
+            <?php foreach($actions->actions as $action) { ?>
+                <?php echo $action->getTitle() ?><br>
+            <?php } ?>
+            </div>
+        </p>
+    </div>
+    <?php } ?>
+
+
 </div>

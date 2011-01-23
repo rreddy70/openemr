@@ -52,7 +52,7 @@ class ReminderIntervals {
         $display = "";
         foreach( $details as $detail ) {
             if ( $display != "" ) {
-                $display .= " | ";
+                $display .= ", ";
             }
             $display .= $detail->display();
         }
