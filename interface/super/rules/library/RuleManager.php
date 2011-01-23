@@ -1,6 +1,8 @@
 <?php
 
 require_once( src_dir() . "/clinical_rules.php");
+require_once( library_src( 'RuleCriteriaFilterFactory.php') );
+require_once( library_src( 'RuleCriteriaTargetFactory.php') );
 
 /**
  * Description of RuleManager
@@ -24,10 +26,15 @@ class RuleManager {
     const SQL_RULE_FILTER =
     "SELECT * FROM rule_filter where id = ?";
 
-    var $ruleCriteriaFactory;
+    const SQL_RULE_TARGET =
+    "SELECT * FROM rule_target where id = ?";
+
+    var $filterCriteriaFactory;
+    var $targetCriteriaFactory;
 
     function __construct() {
-        $this->ruleCriteriaFactory = new RuleCriteriaFactory();
+        $this->filterCriteriaFactory = new RuleCriteriaFilterFactory();
+        $this->targetCriteriaFactory = new RuleCriteriaTargetFactory();
     }
 
     /**
@@ -67,6 +74,9 @@ class RuleManager {
         //
         $this->fillRuleFilterCriteria( $rule );
 
+        //
+        $this->fillRuleTargetCriteria( $rule );
+
         return $rule;
     }
 
@@ -86,7 +96,7 @@ class RuleManager {
             $inclusion = $row['include_flag'] == 1;
             $optional = $row['required_flag'] == 1;
 
-            $criteria = $this->ruleCriteriaFactory->build( $ruleId, $inclusion, $optional,
+            $criteria = $this->filterCriteriaFactory->build( $ruleId, $inclusion, $optional,
                     $method, $methodDetail, $value );
 
             
@@ -97,6 +107,36 @@ class RuleManager {
 
             // else
             $ruleFilters->add( $criteria );
+        }
+    }
+
+    /**
+     * xxx todo console this with the rule filter method before we're done, this is duplicate code!!
+     * @param Rule $rule
+     */
+    function fillRuleTargetCriteria( $rule ) {
+        $stmt = sqlStatement( self::SQL_RULE_TARGET, array( $rule->id ) );
+        $ruleTargets = new RuleTargets();
+        $rule->setRuleTargets($ruleTargets);
+
+        for($iter=0; $row=sqlFetchArray($stmt); $iter++) {
+            $method = $row['method'];
+            $methodDetail = $row['method_detail'];
+            $value = $row['value'];
+            $inclusion = $row['include_flag'] == 1;
+            $optional = $row['required_flag'] == 1;
+
+            $criteria = $this->targetCriteriaFactory->build( $ruleId, $inclusion, $optional,
+                    $method, $methodDetail, $value );
+
+
+            if ( is_null($criteria) ) {
+                // unrecognized critera
+                continue;
+            }
+
+            // else
+            $ruleTargets->add( $criteria );
         }
     }
 

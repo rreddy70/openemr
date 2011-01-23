@@ -59,4 +59,22 @@
         </p>
     </p>
     <?php } ?>
+
+    <!-- rule target criteria -->
+    <?php $targets = $viewBean->rule->targets?>
+    <?php if ( $targets ) { ?>
+    <p>
+        <span><?php out('Clinical targets'); ?></span>
+        <p>
+            <?php foreach($targets->criteria as $criteria) { ?>
+                <div>
+                    <span><?php out( $criteria->getTitle() ) ?></span>
+                    <span><?php out( $criteria->getCharacteristics() ) ?></span>
+                    <span><?php out( $criteria->getRequirements() ) ?></span>
+                </div>
+            <?php } ?>
+        </p>
+    </p>
+    <?php } ?>
+
 </div>

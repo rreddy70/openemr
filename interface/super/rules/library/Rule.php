@@ -25,6 +25,11 @@ class Rule {
      */
     var $filters;
 
+    /**
+     * @var RuleTargets
+     */
+    var $targets;
+
     function __construct( $id, $title='', $ruleTypes=array() ) {
         $this->id = $id;
         $this->title = $title;
@@ -78,6 +83,14 @@ class Rule {
      */
     function setRuleFilters( $ruleFilters ) {
         $this->filters = $ruleFilters;
+    }
+
+    /**
+     *
+     * @param RuleTargets $ruleTargets
+     */
+    function setRuleTargets( $ruleTargets ) {
+        $this->targets = $ruleTargets;
     }
 }
 ?>

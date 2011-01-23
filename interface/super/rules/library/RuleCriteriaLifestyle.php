@@ -29,20 +29,8 @@ class RuleCriteriaLifestyle extends RuleCriteria {
     }
 
     function getTitle() {
-        $label = xl_layout_label( $this->getLabel() );
+        $label = xl_layout_label( $this->getLabel( $this->type) );
         return out( "Lifestyle", false ) . " - " . $label;
-    }
-
-    private function getLabel() {
-        $sql = sqlStatement(
-            "SELECT title from layout_options WHERE field_id = ?", array($this->type)
-        );
-        if (sqlNumRows($sql) > 0) {
-            $result = sqlFetchArray( $sql );
-            return $result['title'];
-        } else {
-            return $this->title;
-        }
     }
 }
 ?>
