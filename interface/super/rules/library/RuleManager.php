@@ -54,10 +54,13 @@ class RuleManager {
      */
     function getRule($id, $pid = 0) {
         // xxx todo move this logic into a DAO
-        $ruleResult = sqlFetchArray( sqlStatement(
-                self::SQL_RULE_DETAIL . " WHERE id = ? AND pid = ?",
-                array($id, $pid))
+        $ruleResult = sqlQuery( 
+            self::SQL_RULE_DETAIL . " WHERE id = ? AND pid = ?", array($id, $pid)
         );
+
+        if ( !$ruleResult ) {
+            return null;
+        }
 
         $rule = new Rule($id, $ruleResult['title']);
         // populate rule types

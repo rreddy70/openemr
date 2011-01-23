@@ -32,12 +32,12 @@ class RuleCriteriaDatabaseCustom extends RuleCriteria {
     function getRequirements() {
         $requirements = "";
         if ( $this->value ) {
-            $requirements .= out( "Value", false ) . ": ";
+            $requirements .= xl( "Value" ) . ": ";
             $requirements .= $this->decodeComparator($this->valueComparator) . " " . $this->value;
             $requirements .= " | ";
         }
         
-        $requirements .= out( "Frequency", false ) . ": ";
+        $requirements .= xl( "Frequency" ) . ": ";
         $requirements .= $this->decodeComparator($this->frequencyComparator) . " " . $this->frequency;
 
         return $requirements;

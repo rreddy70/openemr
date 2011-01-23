@@ -12,7 +12,7 @@
     <!-- summary -->
     <div class="section text">
         <p class="header"><?php out('Summary'); ?></p>
-        <p><b><?php out($rule->title) ?></b>
+        <p><b><?php echo $rule->title ?></b>
         (<?php echo implode( ", ", $rule->ruleTypes ); ?>)
         </p>
     </div>
@@ -30,7 +30,7 @@
 
             <?php foreach($intervals->getTypes() as $type) {?>
                 <div>
-                <span class="left_label"><?php out($type->lbl) ?></span>
+                <span class="left_label"><?php echo $type->lbl ?></span>
                 <span class="right_value">
                     <?php echo $intervals->displayDetails( $type ) ?>
                 </span>
@@ -54,9 +54,9 @@
 
             <?php foreach($filters->criteria as $criteria) { ?>
                 <div>
-                    <span class="left_label"><?php out( $criteria->getTitle() ) ?></span>
-                    <span class="mid_value"><?php out( $criteria->getCharacteristics() ) ?></span>
-                    <span class="right_value"><?php out( $criteria->getRequirements() ) ?></span>
+                    <span class="left_label"><?php echo( $criteria->getTitle() ) ?></span>
+                    <span class="mid_value"><?php echo( $criteria->getCharacteristics() ) ?></span>
+                    <span class="right_value"><?php echo( $criteria->getRequirements() ) ?></span>
                 </div>
             <?php } ?>
         </p>
@@ -76,10 +76,10 @@
 
             <?php foreach($targets->criteria as $criteria) { ?>
                 <div>
-                    <span class="left_label"><?php out( $criteria->getTitle() ) ?></span>
-                    <span class="mid_value"><?php out( $criteria->getCharacteristics() ) ?></span>
+                    <span class="left_label"><?php echo( $criteria->getTitle() ) ?></span>
+                    <span class="mid_value"><?php echo( $criteria->getCharacteristics() ) ?></span>
                     <span class="right_value">
-                            <?php out( $criteria->getRequirements() ) ?>
+                            <?php echo( $criteria->getRequirements() ) ?>
                             <?php echo is_null( $criteria->getInterval() ) ?  "" :
                             " | " . out("Interval", false) . ": " . $criteria->getInterval() ?>
                     </span>

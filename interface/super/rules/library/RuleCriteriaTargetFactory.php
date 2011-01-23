@@ -20,7 +20,6 @@ class RuleCriteriaTargetFactory extends RuleCriteriaFactory {
         $this->strategyMap['target_sex'] = new RuleCriteriaSexBuilder();
         $this->strategyMap['target_lists'] = new RuleCriteriaListsBuilder();
         $this->strategyMap['target_database'] = new RuleCriteriaDatabaseBuilder();
-        $this->strategyMap['target_interval'] = null;
     }
 
     function getStrategyMap() {

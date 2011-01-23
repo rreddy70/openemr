@@ -35,8 +35,8 @@ class ReminderIntervalRange {
 
     private static function map() {
         $map = array(
-            'pre'  =>  new ReminderIntervalType( 'pre', out( 'Warning', false) ),
-            'post' =>  new ReminderIntervalType( 'post', out( 'Past due', false ) )
+            'pre'  =>  new ReminderIntervalType( 'pre', xl( 'Warning' ) ),
+            'post' =>  new ReminderIntervalType( 'post', xl( 'Past due') )
         );
         return $map;
     }

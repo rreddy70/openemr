@@ -25,11 +25,6 @@ abstract class RuleCriteria {
     /**
      * @var string
      */
-    var $value;
-
-    /**
-     * @var string
-     */
     var $interval;
 
     /**
@@ -38,9 +33,9 @@ abstract class RuleCriteria {
     var $intervalType;
 
     function getCharacteristics() {
-        $characteristics = $this->optional ? out ( "Optional", false ) : out ( "Required", false );
+        $characteristics = $this->optional ? xl ( "Optional" ) : xl ( "Required" );
         $characteristics .= " ";
-        $characteristics .= $this->inclusion ? out( "Inclusion", false ) : out( "Exclusion", false );
+        $characteristics .= $this->inclusion ? xl( "Inclusion" ) : xl( "Exclusion" );
 
         return $characteristics;
     }

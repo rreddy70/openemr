@@ -19,9 +19,9 @@ class RuleCriteriaLifestyle extends RuleCriteria {
     }
 
     function getRequirements() {
-        $requirements = out( "Value", false ) . ": ";
+        $requirements = xl( "Value" ) . ": ";
         if ( is_null($this->matchValue ) ) {
-            $requirements .= out( "Any", false );
+            $requirements .= xl( "Any" );
         } else {
             $requirements .= "'" . $this->matchValue . "'";
         }
@@ -30,7 +30,7 @@ class RuleCriteriaLifestyle extends RuleCriteria {
 
     function getTitle() {
         $label = xl_layout_label( $this->getLabel( $this->type) );
-        return out( "Lifestyle", false ) . " - " . $label;
+        return xl( "Lifestyle" ) . " - " . $label;
     }
 }
 ?>

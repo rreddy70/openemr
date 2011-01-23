@@ -23,7 +23,7 @@ class RuleCriteriaSimpleText extends RuleCriteria {
     }
 
     function getTitle() {
-        return out( $this->title, false );
+        return $this->title;
     }
 
 }

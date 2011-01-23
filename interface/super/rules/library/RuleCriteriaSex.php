@@ -10,13 +10,19 @@
  * @author aron
  */
 class RuleCriteriaSex extends RuleCriteria {
+    
+    var $male;
+
+    function __construct( $male ) {
+        $this->male = $male;
+    }
 
     function getRequirements() {
-        return out( $this->value, false );
+        return $this->male ? xl( 'Male' ) : xl( 'Female' );
     }
 
     function getTitle() {
-        return out( "Sex", false );
+        return xl( "Sex" );
     }
 
 }
