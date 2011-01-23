@@ -1,13 +1,10 @@
 <?php
-/* 
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 
 /**
- * todo docs
- * enum
+ * This object maintains a collection of ReminderIntervalDetail for a given rule.
+ * Reminder details are derived from the rule_reminder table.
  * @author aron
+ *
  */
 class ReminderIntervals {
 
@@ -18,7 +15,7 @@ class ReminderIntervals {
     }
 
     /**
-     *
+     * Adds a ReminderIntervalDetail to the collection, which is a map
      * @param ReminderIntervalDetail $detail
      */
     function addDetail( $detail ) {

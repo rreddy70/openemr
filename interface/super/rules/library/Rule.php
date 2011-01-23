@@ -1,12 +1,14 @@
 <?php
-/* 
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
-
 /**
- * Description of Rule
+ * This is the primary domain object representing a rule in the rules engine.
+ * Rules are composed of:
+ * - one or more rule types (see RuleType enum)
+ * - a ReminderIntervals object
+ * - a RuleFilters object
+ * - a RuleTargets object
+ * - a RuleActions object
  *
+ * Rules are typically assembled by the RuleManager.
  * @author aron
  */
 class Rule {
@@ -15,7 +17,6 @@ class Rule {
     var $title;
 
     /**
-     *
      * @var ReminderIntervals
      */
     var $reminderIntervals;
