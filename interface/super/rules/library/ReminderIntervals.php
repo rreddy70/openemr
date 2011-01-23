@@ -46,6 +46,18 @@ class ReminderIntervals {
     function getDetailFor( $type ) {
         return $this->detailMap[ $type->code ];
     }
-    
+
+    function displayDetails( $type ) {
+        $details = $this->getDetailFor($type);
+        $display = "";
+        foreach( $details as $detail ) {
+            if ( $display != "" ) {
+                $display .= " | ";
+            }
+            $display .= $detail->display();
+        }
+        return $display;
+    }
+
 }
 ?>

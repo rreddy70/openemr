@@ -82,17 +82,17 @@ abstract class RuleCriteria {
 
     protected function decodeComparator( $comparator ) {
         switch ( $comparator ) {
-            case "eq": return "exactly";
+            case "eq": return "";
                 break;
-            case "ne": return "not";
+            case "ne": return "!=";
                 break;
-            case "gt": return "more than";
+            case "gt": return ">";
                 break;
-            case "lt": return "less than";
+            case "lt": return "<";
                 break;
-            case "ge": return "more than or exactly";
+            case "ge": return ">=";
                 break;
-            case "le": return "less than or exactly";
+            case "le": return "<=";
                 break;
         }
         return "";

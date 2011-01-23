@@ -45,6 +45,47 @@ root {
     display: none;
 }
 
+/*
+ * browse rules
+ */
+.rule_detail {
+     max-width: 700px;
+}
 
+.rule_detail .section {
+    margin-bottom: 30px;
+}
 
+.rule_detail .header, .rule_detail .ruletitle {
+     font-size: 18px;
+}
 
+.rule_detail .ruletitle {
+    margin-top: 6px;
+}
+
+.rule_detail .left_label {
+    display:block;
+    float: left;
+    width: 200px;
+}
+
+.rule_detail .right_value {
+    display:block;
+}
+
+.rule_detail .mid_value {
+    float: left;
+    display:block;
+    width: 150px;
+}
+
+.rule_detail p {
+    margin-bottom: -10px;
+}
+
+.rule_detail table {
+}
+
+.colhead {
+}

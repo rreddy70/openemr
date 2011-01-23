@@ -40,6 +40,12 @@ class ReminderIntervalDetail {
         $this->amount = $amount;
         $this->timeUnit = $unit;
     }
+
+    function display() {
+        $display = $this->intervalRange->lbl . ": "
+                 . $this->amount . " " . $this->timeUnit->lbl;
+        return $display;
+    }
     
 }
 ?>

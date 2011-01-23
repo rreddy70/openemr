@@ -18,7 +18,6 @@ class RuleCriteriaDatabaseBuilder extends RuleCriteriaBuilder {
         $exploded = explode("::", $value);
         if ( $exploded[0] == "LIFESTYLE" ) {
             $type = $exploded[1];
-            echo $exploded[2];
             return new RuleCriteriaLifestyle( $type, sizeof( $exploded ) > 2 ? $exploded[2] : null );
         } else if ( $exploded[0] == 'CUSTOM' ) {
             $category = $exploded[1];

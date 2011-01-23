@@ -7,74 +7,86 @@
   </tr>
 </table>
 
+<?php $rule = $viewBean->rule ?>
 <div class="rule_detail">
     <!-- summary -->
-    <p class="summary">
-        <span><?php out('Title'); ?></span>
-        <span><?php out($viewBean->rule->title) ?></span>
-    </p>
-
-    <p>
-        <span><?php out('Type'); ?></span>
-        <span>
-            <?php foreach($viewBean->rule->ruleTypes as $type) {?>
-                <?php out($type) ?>
-            <?php } ?>
-        </span>
-    </p>
+    <div class="section text">
+        <p class="header"><?php out('Summary'); ?></p>
+        <p><b><?php out($rule->title) ?></b>
+        (<?php echo implode( ", ", $rule->ruleTypes ); ?>)
+        </p>
+    </div>
 
     <!-- reminder intervals -->
-    <?php $intervals = $viewBean->rule->reminderIntervals ?>
-    <?php if ( $intervals) { ?>
-    <p>
-        <span><?php out('Reminder Intervals'); ?></span>
-        <span>
-                <?php foreach($intervals->getTypes() as $type) {?>
-                    <div>
-                        <span><?php out($type->lbl) ?></span>
-                        <?php foreach( $intervals->getDetailFor( $type ) as $detail ) {?>
-                        <span><?php out($detail->intervalRange->lbl) ?>:</span>
-                        <span><?php out($detail->amount) ?></span>
-                        <span><?php out($detail->timeUnit->lbl) ?></span>
-                        <?php } ?>
-                    </div>
-                <?php } ?>
-        </span>
-    </p>
+    <?php $intervals = $rule->reminderIntervals; if ( $intervals) { ?>
+    <div class="section text">
+        <p class="header"><?php out('Reminder intervals'); ?></p>
+
+        <p>
+            <div>
+                <span class="left_label colhead"><u><?php out("Type") ?></u></span>
+                <span class="right_value colhead"><u><?php out("Detail") ?></u></span>
+            </div>
+
+            <?php foreach($intervals->getTypes() as $type) {?>
+                <div>
+                <span class="left_label"><?php out($type->lbl) ?></span>
+                <span class="right_value">
+                    <?php echo $intervals->displayDetails( $type ) ?>
+                </span>
+                </div>
+            <?php } ?>
+        </p>
+    </div>
     <?php } ?>
 
     <!-- rule filter criteria -->
-    <?php $filters = $viewBean->rule->filters ?>
-    <?php if ( $filters ) { ?>
-    <p>
-        <span><?php out('Demographic filter criteria'); ?></span>
+    <?php $filters = $rule->filters; if ( $filters ) { ?>
+    <div class="section text">
+        <p class="header"><?php out('Demographics filter criteria'); ?></p>
+
         <p>
+            <div>
+                <span class="left_label"><u><?php out("Criteria") ?></u></span>
+                <span class="mid_value"><u><?php out("Characteristics") ?></u></span>
+                <span class="right_value"><u><?php out("Requirements") ?></u></span>
+            </div>
+
             <?php foreach($filters->criteria as $criteria) { ?>
                 <div>
-                    <span><?php out( $criteria->getTitle() ) ?></span>
-                    <span><?php out( $criteria->getCharacteristics() ) ?></span>
-                    <span><?php out( $criteria->getRequirements() ) ?></span>
+                    <span class="left_label"><?php out( $criteria->getTitle() ) ?></span>
+                    <span class="mid_value"><?php out( $criteria->getCharacteristics() ) ?></span>
+                    <span class="right_value"><?php out( $criteria->getRequirements() ) ?></span>
                 </div>
             <?php } ?>
         </p>
-    </p>
+    </div>
     <?php } ?>
 
     <!-- rule target criteria -->
-    <?php $targets = $viewBean->rule->targets?>
-    <?php if ( $targets ) { ?>
-    <p>
-        <span><?php out('Clinical targets'); ?></span>
+    <?php $targets = $rule->targets; if ( $targets ) { ?>
+    <div class="section text">
+        <p class="header"><?php out('Clinical targets'); ?></p>
         <p>
+            <div>
+                <span class="left_label"><u><?php out("Criteria") ?></u></span>
+                <span class="mid_value"><u><?php out("Characteristics") ?></u></span>
+                <span class="right_value"><u><?php out("Requirements") ?></u></span>
+            </div>
+
             <?php foreach($targets->criteria as $criteria) { ?>
                 <div>
-                    <span><?php out( $criteria->getTitle() ) ?></span>
-                    <span><?php out( $criteria->getCharacteristics() ) ?></span>
-                    <span><?php out( $criteria->getRequirements() ) ?></span>
+                    <span class="left_label"><?php out( $criteria->getTitle() ) ?></span>
+                    <span class="mid_value"><?php out( $criteria->getCharacteristics() ) ?></span>
+                    <span class="right_value">
+                            <?php out( $criteria->getRequirements() ) ?>
+                            <?php echo is_null( $criteria->getInterval() ) ?  "" :
+                            " | " . out("Interval", false) . ": " . $criteria->getInterval() ?>
+                    </span>
                 </div>
             <?php } ?>
         </p>
-    </p>
+    </div>
     <?php } ?>
 
 </div>
