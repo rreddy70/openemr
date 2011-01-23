@@ -27,7 +27,14 @@ abstract class RuleCriteria {
      */
     var $value;
 
-    abstract function getCharacteristics();
+    function getCharacteristics() {
+        $characteristics = $this->optional ? "Optional" : "Required";
+        $characteristics .= " ";
+        $characteristics .= $this->inclusion ? "Inclusion" : "Exclusion";
+
+        return out( $characteristics, false );
+    }
+
     abstract function getRequirements();
     abstract function getTitle();
 

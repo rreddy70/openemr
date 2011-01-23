@@ -16,9 +16,6 @@ class RuleCriteriaAgeBuilder extends RuleCriteriaBuilder {
      * @return RuleCriteria
      */
     function build( $method, $methodDetail, $value ) {
-        echo $method . "<br>";
-        echo $methodDetail . "<br>";
-        echo $value . "<br>";
         $criteria = new RuleCriteriaAge( 
                 $method == 'filt_age_max' ? 'max' : 'min', 
                 $value, 

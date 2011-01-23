@@ -31,7 +31,7 @@
         <span>
                 <?php foreach($intervals->getTypes() as $type) {?>
                     <div>
-                        <p><?php out($type->lbl) ?></p>
+                        <span><?php out($type->lbl) ?></span>
                         <?php foreach( $intervals->getDetailFor( $type ) as $detail ) {?>
                         <span><?php out($detail->intervalRange->lbl) ?>:</span>
                         <span><?php out($detail->amount) ?></span>
@@ -50,12 +50,9 @@
         <span><?php out('Demographic filter criteria'); ?></span>
         <p>
             <?php foreach($filters->criteria as $criteria) { ?>
-                <!-- title -->
                 <div>
                     <span><?php out( $criteria->getTitle() ) ?></span>
-                </div>
-                <!-- requirements -->
-                <div>
+                    <span><?php out( $criteria->getCharacteristics() ) ?></span>
                     <span><?php out( $criteria->getRequirements() ) ?></span>
                 </div>
             <?php } ?>

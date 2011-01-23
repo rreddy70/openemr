@@ -11,9 +11,6 @@
  */
 class RuleCriteriaSex extends RuleCriteria {
 
-    function getCharacteristics() {
-    }
-
     function getRequirements() {
         return out( $this->value, false );
     }

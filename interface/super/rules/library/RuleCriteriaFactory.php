@@ -17,8 +17,8 @@ class RuleCriteriaFactory {
         $this->strategyMap['filt_age_min'] = new RuleCriteriaAgeBuilder();
         $this->strategyMap['filt_age_max'] = new RuleCriteriaAgeBuilder();
         $this->strategyMap['filt_sex'] = new RuleCriteriaSexBuilder();
-        $this->strategyMap['filt_lists'] = '';
-        $this->strategyMap['filt_database'] = '';
+        $this->strategyMap['filt_lists'] = new RuleCriteriaListsBuilder();
+        $this->strategyMap['filt_database'] = new RuleCriteriaDatabaseBuilder();
     }
 
     /**

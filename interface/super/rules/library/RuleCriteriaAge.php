@@ -24,9 +24,6 @@ class RuleCriteriaAge extends RuleCriteria {
         $this->timeUnit = $timeUnit;
     }
 
-    function getCharacteristics() {
-    }
-
     function getRequirements() {
         return $this->value;
     }
