@@ -8,7 +8,7 @@
 
 <table class="header">
   <tr>
-        <td class="title"><?php out('Rule Edit - Summary'); ?></td>
+        <td class="title"><?php out('Rule Edit'); ?></td>
         <td>
             <a href="index.php?action=detail!view&id=<?php echo $rule->id ?>" class="iframe_medium css_button">
                 <span><?php out("Cancel") ?></span>
@@ -19,16 +19,18 @@
 </table>
 
 <div class="rule_detail edit text">
+    <p class="header"><?php out('Summary'); ?> </p>
+
     <form action="index.php?action=edit!submit_summary" method="post" id="frm_submit">
     <input type="hidden" name="id" value="<?php echo $rule->id ?>"/>
 
     <p class="row">
-    <span class="left_col colhead"><?php out("Title") ?></span>
+    <span class="left_col colhead req" data-fld="fld_title"><?php out("Title") ?></span>
     <span class="end_col"><input type="text" name="fld_title" class="field" id="fld_title" value="<?php echo $rule->title ?>"></span>
     </p>
     
     <p class="row">
-    <span class="left_col colhead"><?php out("Type") ?></span>
+    <span class="left_col colhead req" data-fld="fld_ruleTypes[]"><?php out("Type") ?></span>
     <span class="end_col">
         <?php foreach ( RuleType::values() as $type ) {?>
         <input name="fld_ruleTypes[]"
@@ -40,4 +42,9 @@
     </p>
 
     </form>
+    
+</div>
+
+<div id="required_msg" class="small">
+    <span class="required">*</span>Required fields
 </div>

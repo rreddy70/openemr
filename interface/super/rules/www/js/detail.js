@@ -29,7 +29,6 @@ var rule_detail = function( args ) {
         // todo
     }
 
- 
     return {
             init: function() {
                 $( document ).ready( function() {

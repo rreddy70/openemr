@@ -109,3 +109,22 @@ root {
     margin-right: 10px;
     font-weight: bold;
 }
+
+#required_msg {
+    margin-top:30px;
+    width: 80%;
+    border-top: 1px solid;
+    display:none;
+}
+
+.rule_detail.edit p.header {
+    margin-bottom:5px;
+}
+
+.field_err_marker {
+    background-color: red;
+}
+
+.field_err_lbl_marker {
+    color: red;
+}

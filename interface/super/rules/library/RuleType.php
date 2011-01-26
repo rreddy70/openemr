@@ -37,7 +37,7 @@ class RuleType {
 
     private static function map() {
         $map = array(
-            self::ActiveAlert  =>  new RuleType( self::ActiveAlert, xl( 'Active Alret' ) ),
+            self::ActiveAlert  =>  new RuleType( self::ActiveAlert, xl( 'Active Alert' ) ),
             self::PassiveAlert   =>  new RuleType( self::PassiveAlert, xl( 'Passive Alert' ) ),
             self::CQM   =>  new RuleType( self::CQM, xl( 'CQM' ) ),
             self::AMC   =>  new RuleType( self::AMC, xl( 'AMC' ) ),
