@@ -39,6 +39,22 @@ class RuleManager {
     "SELECT * FROM rule_action
      WHERE id = ?";
 
+    //
+
+    const SQL_UPDATE_FLAGS =
+    "UPDATE clinical_rules
+        SET active_alert_flag = ?,
+            passive_alert_flag = ?,
+            cqm_flag = ?,
+            amc_flag = ?,
+            patient_reminder_flag = ?
+      WHERE id = ?";
+
+    const SQL_UPDATE_TITLE =
+    "UPDATE list_options
+        SET title = ?
+      WHERE option_id = ?";
+
     var $filterCriteriaFactory;
     var $targetCriteriaFactory;
 
@@ -83,19 +99,19 @@ class RuleManager {
      */
     private function fillRuleTypes( $rule, $ruleResult ) {
         if ($ruleResult['active_alert_flag'] == 1) {
-            $rule->addRuleType(RuleType::ActiveAlert);
+            $rule->addRuleType(RuleType::from(RuleType::ActiveAlert));
         }
         if ($ruleResult['passive_alert_flag'] == 1) {
-            $rule->addRuleType(RuleType::PassiveAlert);
+            $rule->addRuleType(RuleType::from(RuleType::PassiveAlert));
         }
         if ($ruleResult['cqm_flag'] == 1) {
-            $rule->addRuleType(RuleType::CQM);
+            $rule->addRuleType(RuleType::from(RuleType::CQM));
         }
         if ($ruleResult['amc_flag'] == 1) {
-            $rule->addRuleType(RuleType::AMC);
+            $rule->addRuleType(RuleType::from(RuleType::AMC));
         }
         if ($ruleResult['patient_reminder_flag'] == 1) {
-            $rule->addRuleType(RuleType::PatientReminder);
+            $rule->addRuleType(RuleType::from(RuleType::PatientReminder));
         }
     }
 
@@ -233,6 +249,24 @@ class RuleManager {
             $rule->setRuleActions( $actions );
         }
 
+    }
+
+    function updateSummary( $ruleId, $types, $title ) {
+        $rule = $this->getRule( $ruleId );
+
+        // update flags
+        sqlQuery(sqlStatement( self::SQL_UPDATE_FLAGS, array(
+            in_array(RuleType::ActiveAlert, $types) ? 1 : 0,
+            in_array(RuleType::PassiveAlert, $types) ? 1 : 0,
+            in_array(RuleType::CQM, $types) ? 1 : 0,
+            in_array(RuleType::AMC, $types) ? 1 : 0,
+            in_array(RuleType::PatientReminder, $types) ? 1 : 0,
+            $rule->id )
+        ));
+
+        // update title
+        sqlQuery( sqlStatement( self::SQL_UPDATE_TITLE, array( $title,
+            $ruleId )));
     }
 
 }

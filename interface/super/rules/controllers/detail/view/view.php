@@ -1,3 +1,11 @@
+<?php $rule = $viewBean->rule ?>
+
+<script language="javascript" src="<?php js_src('detail.js') ?>"></script>
+<script type="text/javascript">
+    var detail = new rule_detail( {editable: <?php echo $rule->isEditable() ? "true":"false"; ?>});
+    detail.init();
+</script>
+
 <table class="header">
   <tr >
         <td class="title"><?php out('Rule Detail'); ?></td>
@@ -7,31 +15,32 @@
   </tr>
 </table>
 
-<?php $rule = $viewBean->rule ?>
 <div class="rule_detail">
     <!-- summary -->
     <div class="section text">
-        <p class="header"><?php out('Summary'); ?></p>
+        <p class="header"><?php out('Summary'); ?> <a href="index.php?action=edit!summary&id=<?php echo $rule->id ?>" class="action_link" id="edit_summary">(edit)</a></p>
         <p><b><?php echo $rule->title ?></b>
-        (<?php echo implode( ", ", $rule->ruleTypes ); ?>)
+        (<?php echo implode( ", ", $rule->getRuleTypeLabels() ); ?>)
         </p>
     </div>
 
     <!-- reminder intervals -->
     <?php $intervals = $rule->reminderIntervals; if ( $intervals) { ?>
     <div class="section text">
-        <p class="header"><?php out('Reminder intervals'); ?></p>
+        <p class="header"><?php out('Reminder intervals'); ?> <a href="" class="action_link">(add)</a></p>
 
         <p>
             <div>
-                <span class="left_label colhead"><u><?php out("Type") ?></u></span>
-                <span class="right_value colhead"><u><?php out("Detail") ?></u></span>
+                <span class="left_col colhead">&nbsp;</span>
+                <span class="mid_col colhead"><u><?php out("Type") ?></u></span>
+                <span class="end_col colhead"><u><?php out("Detail") ?></u></span>
             </div>
 
             <?php foreach($intervals->getTypes() as $type) {?>
                 <div>
-                <span class="left_label"><?php echo $type->lbl ?></span>
-                <span class="right_value">
+                <span class="left_col"><a href="" class="action_link">(edit)</a> <a href="" class="action_link">(delete)</a></span>
+                <span class="mid_col"><?php echo $type->lbl ?></span>
+                <span class="end_col">
                     <?php echo $intervals->displayDetails( $type ) ?>
                 </span>
                 </div>
@@ -43,20 +52,22 @@
     <!-- rule filter criteria -->
     <?php $filters = $rule->filters; if ( $filters ) { ?>
     <div class="section text">
-        <p class="header"><?php out('Demographics filter criteria'); ?></p>
+        <p class="header"><?php out('Demographics filter criteria'); ?> <a href="" class="action_link">(add)</a></p>
 
         <p>
             <div>
-                <span class="left_label"><u><?php out("Criteria") ?></u></span>
-                <span class="mid_value"><u><?php out("Characteristics") ?></u></span>
-                <span class="right_value"><u><?php out("Requirements") ?></u></span>
+                <span class="left_col">&nbsp;</span>
+                <span class="mid_col"><u><?php out("Criteria") ?></u></span>
+                <span class="mid_col"><u><?php out("Characteristics") ?></u></span>
+                <span class="end_col"><u><?php out("Requirements") ?></u></span>
             </div>
 
             <?php foreach($filters->criteria as $criteria) { ?>
                 <div>
-                    <span class="left_label"><?php echo( $criteria->getTitle() ) ?></span>
-                    <span class="mid_value"><?php echo( $criteria->getCharacteristics() ) ?></span>
-                    <span class="right_value"><?php echo( $criteria->getRequirements() ) ?></span>
+                    <span class="left_col"><a href="" class="action_link">(edit)</a> <a href="" class="action_link">(delete)</a></span>
+                    <span class="mid_col"><?php echo( $criteria->getTitle() ) ?></span>
+                    <span class="mid_col"><?php echo( $criteria->getCharacteristics() ) ?></span>
+                    <span class="end_col"><?php echo( $criteria->getRequirements() ) ?></span>
                 </div>
             <?php } ?>
         </p>
@@ -66,19 +77,21 @@
     <!-- rule target criteria -->
     <?php $targets = $rule->targets; if ( $targets ) { ?>
     <div class="section text">
-        <p class="header"><?php out('Clinical targets'); ?></p>
+        <p class="header"><?php out('Clinical targets'); ?> <a href="" class="action_link">(add)</a></p>
         <p>
             <div>
-                <span class="left_label"><u><?php out("Criteria") ?></u></span>
-                <span class="mid_value"><u><?php out("Characteristics") ?></u></span>
-                <span class="right_value"><u><?php out("Requirements") ?></u></span>
+                <span class="left_col">&nbsp;</span>
+                <span class="mid_col"><u><?php out("Criteria") ?></u></span>
+                <span class="mid_col"><u><?php out("Characteristics") ?></u></span>
+                <span class="end_col"><u><?php out("Requirements") ?></u></span>
             </div>
 
             <?php foreach($targets->criteria as $criteria) { ?>
                 <div>
-                    <span class="left_label"><?php echo( $criteria->getTitle() ) ?></span>
-                    <span class="mid_value"><?php echo( $criteria->getCharacteristics() ) ?></span>
-                    <span class="right_value">
+                    <span class="left_col"><a href="" class="action_link">(edit)</a> <a href="" class="action_link">(delete)</a></span>
+                    <span class="mid_col"><?php echo( $criteria->getTitle() ) ?></span>
+                    <span class="mid_col"><?php echo( $criteria->getCharacteristics() ) ?></span>
+                    <span class="end_col">
                             <?php echo( $criteria->getRequirements() ) ?>
                             <?php echo is_null( $criteria->getInterval() ) ?  "" :
                             " | " . out("Interval", false) . ": " . $criteria->getInterval() ?>
@@ -92,15 +105,17 @@
     <!-- rule actions -->
     <?php $actions = $rule->actions; if ( $actions) { ?>
     <div class="section text">
-        <p class="header"><?php out('Actions'); ?></p>
+        <p class="header"><?php out('Actions'); ?> <a href="" class="action_link">(add)</a></p>
         <p>
             <div>
-                <u><?php out("Category/Title") ?></u>
+                <span class="left_col">&nbsp;</span>
+                <span class="end_col"><u><?php out("Category/Title") ?></u></span>
             </div>
 
             <div>
             <?php foreach($actions->actions as $action) { ?>
-                <?php echo $action->getTitle() ?><br>
+                <span class="left_col"><a href="" class="action_link">(edit)</a> <a href="" class="action_link">(delete)</a></span>
+                <span class="end_col"><?php echo $action->getTitle() ?></span>
             <?php } ?>
             </div>
         </p>

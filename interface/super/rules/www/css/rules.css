@@ -64,20 +64,20 @@ root {
     margin-top: 6px;
 }
 
-.rule_detail .left_label {
+.left_col {
     display:block;
     float: left;
+    width: 100px;
+}
+
+.mid_col {
+    float: left;
+    display:block;
     width: 200px;
 }
 
-.rule_detail .right_value {
+.end_col {
     display:block;
-}
-
-.rule_detail .mid_value {
-    float: left;
-    display:block;
-    width: 150px;
 }
 
 .rule_detail p {
@@ -88,4 +88,24 @@ root {
 }
 
 .colhead {
+}
+
+.action_link {
+    font-size: small;
+}
+
+/*
+* edit rule
+*/
+
+.rule_detail input[type='text'] {
+    width:350px;
+    margin-top:-1px;
+}
+
+.rule_detail.edit .left_col {
+    width: 60px;
+    text-align: right;
+    margin-right: 10px;
+    font-weight: bold;
 }
