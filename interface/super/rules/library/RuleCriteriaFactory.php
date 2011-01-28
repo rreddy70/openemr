@@ -15,7 +15,7 @@ abstract class RuleCriteriaFactory {
      *
      * @param RuleCriteria $criteria
      */
-    function build($ruleId, $inclusion, $optional,
+    function build($ruleId, $guid, $inclusion, $optional,
             $method, $methodDetail, $value) {
 
         $strategyMap = $this->getStrategyMap();
@@ -31,6 +31,7 @@ abstract class RuleCriteriaFactory {
         }
         $criteria->inclusion = $inclusion;
         $criteria->optional = $optional;
+        $criteria->guid = $guid;
 
         return $criteria;
     }

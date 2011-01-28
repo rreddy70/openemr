@@ -54,5 +54,17 @@ class Controller_edit extends BaseController {
         
         $this->redirect("index.php?action=detail!view&id=$ruleId");
     }
+
+    function _action_filter() {
+        $ruleId = _get('id');
+        $rule = $this->getRuleManager()->getRule( $ruleId );
+        $guid = _get('guid');
+        $criteria = $this->getRuleManager()->getRuleFilterCriteria( $guid );
+
+        $this->viewBean->rule = $rule;
+        $this->viewBean->criteria = $criteria;
+        
+        echo get_class( $criteria );
+    }
 }
 ?>

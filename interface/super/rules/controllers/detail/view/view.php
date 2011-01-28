@@ -18,7 +18,11 @@
 <div class="rule_detail">
     <!-- summary -->
     <div class="section text">
-        <p class="header"><?php out('Summary'); ?> <a href="index.php?action=edit!summary&id=<?php echo $rule->id ?>" class="action_link" id="edit_summary">(edit)</a></p>
+        <p class="header">
+            <?php out('Summary'); ?>
+            <a href="index.php?action=edit!summary&id=<?php echo $rule->id ?>"
+               class="action_link" id="edit_summary">(<?php out('edit') ?>)</a>
+        </p>
         <p><b><?php echo $rule->title ?></b>
         (<?php echo implode( ", ", $rule->getRuleTypeLabels() ); ?>)
         </p>
@@ -27,7 +31,7 @@
     <!-- reminder intervals -->
     <?php $intervals = $rule->reminderIntervals; if ( $intervals) { ?>
     <div class="section text">
-        <p class="header"><?php out('Reminder intervals'); ?> <a href="index.php?action=edit!intervals&id=<?php echo $rule->id ?>" class="action_link">(edit)</a></p>
+        <p class="header"><?php out('Reminder intervals'); ?> <a href="index.php?action=edit!intervals&id=<?php echo $rule->id ?>" class="action_link">(<?php out('edit') ?>)</a></p>
 
         <p>
             <div>
@@ -51,7 +55,6 @@
     <?php $filters = $rule->filters; if ( $filters ) { ?>
     <div class="section text">
         <p class="header"><?php out('Demographics filter criteria'); ?> <a href="" class="action_link">(add)</a></p>
-
         <p>
             <div>
                 <span class="left_col">&nbsp;</span>
@@ -60,9 +63,11 @@
                 <span class="end_col"><u><?php out("Requirements") ?></u></span>
             </div>
 
-            <?php foreach($filters->criteria as $criteria) { ?>
+            <?php foreach($filters->criteria as $criteria) { ?> 
                 <div>
-                    <span class="left_col"><a href="" class="action_link">(edit)</a> <a href="" class="action_link">(delete)</a></span>
+                    <span class="left_col">
+                        <a href="index.php?action=edit!filter&guid=<?php echo $criteria->guid ?>" class="action_link">(<?php out('edit') ?>)</a>
+                        <a href="index.php?action=delete!filter&guid=<?php echo $criteria->guid ?>" class="action_link">(delete)</a></span>
                     <span class="mid_col"><?php echo( $criteria->getTitle() ) ?></span>
                     <span class="mid_col"><?php echo( $criteria->getCharacteristics() ) ?></span>
                     <span class="end_col"><?php echo( $criteria->getRequirements() ) ?></span>
@@ -86,7 +91,7 @@
 
             <?php foreach($targets->criteria as $criteria) { ?>
                 <div>
-                    <span class="left_col"><a href="" class="action_link">(edit)</a> <a href="" class="action_link">(delete)</a></span>
+                    <span class="left_col"><a href="" class="action_link">(<?php out('edit') ?>)</a> <a href="" class="action_link">(delete)</a></span>
                     <span class="mid_col"><?php echo( $criteria->getTitle() ) ?></span>
                     <span class="mid_col"><?php echo( $criteria->getCharacteristics() ) ?></span>
                     <span class="end_col">
@@ -112,7 +117,7 @@
 
             <div>
             <?php foreach($actions->actions as $action) { ?>
-                <span class="left_col"><a href="" class="action_link">(edit)</a> <a href="" class="action_link">(delete)</a></span>
+                <span class="left_col"><a href="" class="action_link">(<?php out('edit') ?>)</a> <a href="" class="action_link">(delete)</a></span>
                 <span class="end_col"><?php echo $action->getTitle() ?></span>
             <?php } ?>
             </div>

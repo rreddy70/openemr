@@ -32,6 +32,12 @@ abstract class RuleCriteria {
      */
     var $intervalType;
 
+    /**
+     * uniquely identifies this criteria
+     * @var string
+     */
+    var $guid;
+
     function getCharacteristics() {
         $characteristics = $this->optional ? xl ( "Optional" ) : xl ( "Required" );
         $characteristics .= " ";

@@ -25,10 +25,16 @@ class RuleManager {
       WHERE id = ?";
 
     const SQL_RULE_FILTER =
-    "SELECT * FROM rule_filter WHERE id = ?";
+    "SELECT PASSWORD(CONCAT( id, include_flag, required_flag, method, method_detail, value )) AS guid, rule_filter.*
+       FROM rule_filter WHERE id = ?";
 
     const SQL_RULE_TARGET =
-    "SELECT * FROM rule_target WHERE id = ?";
+    "SELECT *
+       FROM rule_target WHERE id = ?";
+
+    const SQL_RULE_FILTER_BY_GUID =
+    "SELECT * FROM rule_filter
+     WHERE PASSWORD(CONCAT( id, include_flag, required_flag, method, method_detail, value )) = ?";
 
     const SQL_RULE_INTERVAL =
     "SELECT * FROM rule_target 
@@ -129,8 +135,8 @@ class RuleManager {
      * @param Rule $rule
      */
     private function fillRuleFilterCriteria( $rule ) {
-        $criterion = $this->gatherCriteria($rule, self::SQL_RULE_FILTER,
-                $this->filterCriteriaFactory);
+        $stmt = sqlStatement( self::SQL_RULE_FILTER, array( $rule->id ) );
+        $criterion = $this->gatherCriteria($rule, $stmt, $this->filterCriteriaFactory);
         if ( sizeof( $criterion ) > 0 ) {
             $ruleFilters = new RuleFilters();
             $rule->setRuleFilters($ruleFilters);
@@ -147,7 +153,8 @@ class RuleManager {
      * @param Rule $rule
      */
     private function fillRuleTargetCriteria( $rule ) {
-        $criterion = $this->gatherCriteria($rule, self::SQL_RULE_TARGET,
+        $stmt = sqlStatement( self::SQL_RULE_TARGET, array( $rule->id ) );
+        $criterion = $this->gatherCriteria($rule, $stmt,
                 $this->targetCriteriaFactory);
         if ( sizeof( $criterion ) > 0 ) {
             $ruleTargets = new RuleTargets();
@@ -160,6 +167,21 @@ class RuleManager {
     }
 
     /**
+     * @param string $guid
+     * @return RuleCriteria
+     */
+    function getRuleFilterCriteria( $guid ) {
+        $stmt = sqlStatement( self::SQL_RULE_FILTER_BY_GUID, array( $guid ) );
+        $criterion = $this->gatherCriteria($rule, $stmt,
+                $this->filterCriteriaFactory );
+        if ( sizeof( $criterion ) > 0 ) {
+            return $criterion[0];
+        }
+
+        return null;
+    }
+
+    /**
      * Given a sql source for gathering rule criteria (target or filter), this
      * method relies on its supplied subtype of RuleCriteriaFactory to parse out
      * instances of RuleCriteria from the sql source (typically rule_filter or
@@ -168,21 +190,19 @@ class RuleManager {
      * Returns an array of RuleCriteria subtypes, if they were parsable from the
      * supplied sql source.
      * @param Rule $rule
-     * @param string $criteraSrcSql
      * @param RuleCriteriaFactory $factory
      */
-    private function gatherCriteria( $rule, $criteraSrcSql, $factory ) {
-        $stmt = sqlStatement( $criteraSrcSql, array( $rule->id ) );
+    private function gatherCriteria( $rule, $stmt, $factory ) {
         $criterion = array();
-
         for($iter=0; $row=sqlFetchArray($stmt); $iter++) {
+            $guid = $row['guid'];
             $method = $row['method'];
             $methodDetail = $row['method_detail'];
             $value = $row['value'];
             $inclusion = $row['include_flag'] == 1;
             $optional = $row['required_flag'] == 1;
 
-            $criteria = $factory->build( $rule->id, $inclusion, $optional,
+            $criteria = $factory->build( $rule->id, $guid, $inclusion, $optional,
                     $method, $methodDetail, $value );
 
 
