@@ -49,7 +49,7 @@ root {
  * browse rules
  */
 .rule_detail {
-     max-width: 700px;
+     max-width: 100%;
 }
 
 .rule_detail .section {
@@ -103,7 +103,7 @@ root {
     margin-top:-1px;
 }
 
-.rule_detail.edit .left_col {
+.rule_detail.edit.summry .left_col {
     width: 60px;
     text-align: right;
     margin-right: 10px;
@@ -127,4 +127,13 @@ root {
 
 .field_err_lbl_marker {
     color: red;
+}
+
+.intervals .mid_col {
+    width:100px;
+}
+
+.intervals input[type='text'] {
+    width:90px;
+    margin-top:-1px;
 }

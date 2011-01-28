@@ -30,7 +30,7 @@ class ReminderIntervalType {
 
     public static function values() {
         $map = self::map();
-        return array_keys($map);
+        return array_values($map);
     }
 
     private static function map() {

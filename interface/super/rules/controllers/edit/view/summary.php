@@ -18,7 +18,7 @@
   </tr>
 </table>
 
-<div class="rule_detail edit text">
+<div class="rule_detail edit summry text">
     <p class="header"><?php out('Summary'); ?> </p>
 
     <form action="index.php?action=edit!submit_summary" method="post" id="frm_submit">

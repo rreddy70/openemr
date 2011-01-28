@@ -27,19 +27,17 @@
     <!-- reminder intervals -->
     <?php $intervals = $rule->reminderIntervals; if ( $intervals) { ?>
     <div class="section text">
-        <p class="header"><?php out('Reminder intervals'); ?> <a href="" class="action_link">(add)</a></p>
+        <p class="header"><?php out('Reminder intervals'); ?> <a href="index.php?action=edit!intervals&id=<?php echo $rule->id ?>" class="action_link">(edit)</a></p>
 
         <p>
             <div>
-                <span class="left_col colhead">&nbsp;</span>
-                <span class="mid_col colhead"><u><?php out("Type") ?></u></span>
+                <span class="left_col colhead"><u><?php out("Type") ?></u></span>
                 <span class="end_col colhead"><u><?php out("Detail") ?></u></span>
             </div>
 
             <?php foreach($intervals->getTypes() as $type) {?>
                 <div>
-                <span class="left_col"><a href="" class="action_link">(edit)</a> <a href="" class="action_link">(delete)</a></span>
-                <span class="mid_col"><?php echo $type->lbl ?></span>
+                <span class="left_col"><?php echo $type->lbl ?></span>
                 <span class="end_col">
                     <?php echo $intervals->displayDetails( $type ) ?>
                 </span>

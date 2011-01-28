@@ -38,10 +38,22 @@ class ReminderIntervals {
     /**
      *
      * @param ReminderIntervalType $type
+     * @param ReminderIntervalRange $range
      * @return array
      */
-    function getDetailFor( $type ) {
-        return $this->detailMap[ $type->code ];
+    function getDetailFor( $type, $range = null ) {
+        $details = $this->detailMap[ $type->code ];
+        if (is_null($range) ) {
+            return $details;
+        }
+
+        foreach( $details as $detail ) {
+            if ( $detail->intervalRange == $range ) {
+                return $detail;
+            }
+        }
+
+        return null;
     }
 
     function displayDetails( $type ) {

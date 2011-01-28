@@ -39,8 +39,6 @@ class RuleManager {
     "SELECT * FROM rule_action
      WHERE id = ?";
 
-    //
-
     const SQL_UPDATE_FLAGS =
     "UPDATE clinical_rules
         SET active_alert_flag = ?,
@@ -54,6 +52,15 @@ class RuleManager {
     "UPDATE list_options
         SET title = ?
       WHERE option_id = ?";
+
+    const SQL_REMOVE_INTERVALS =
+    "DELETE FROM rule_reminder
+           WHERE id = ?";
+
+    const SQL_INSERT_INTERVALS =
+    "INSERT INTO rule_reminder
+            (id, method, method_detail, value)
+     VALUES ( ?, ?, ?, ?)";
 
     var $filterCriteriaFactory;
     var $targetCriteriaFactory;
@@ -266,7 +273,31 @@ class RuleManager {
 
         // update title
         sqlQuery( sqlStatement( self::SQL_UPDATE_TITLE, array( $title,
-            $ruleId )));
+            $ruleId ) ));
+    }
+
+    /**
+     *
+     * @param Rule $rule
+     * @param ReminderIntervals $intervals
+     */
+    function updateIntervals( $rule, $intervals ) {
+        // remove old intervals
+        sqlQuery(sqlStatement( self::SQL_REMOVE_INTERVALS, array( $rule->id )));
+
+        // insert new intervals
+        foreach( $intervals->getTypes() as $type ) {
+            $typeDetails = $intervals->getDetailFor($type);
+            foreach( $typeDetails as $detail ) {
+                sqlQuery( sqlStatement( self::SQL_INSERT_INTERVALS, array(
+                    $rule->id,                                                      //id
+                    $type->code . "_reminder_" . $detail->intervalRange->code,      // method
+                    $detail->timeUnit->code,                                        // method_detail
+                    $detail->amount                                                 // value
+                )));
+
+            }
+        }
     }
 
 }

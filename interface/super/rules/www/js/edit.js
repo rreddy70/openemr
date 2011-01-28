@@ -28,6 +28,8 @@ var rule_edit = function( args ) {
         var success = true;
         $(".req").each( function() {
             var label = $(this);
+
+            // test field
             var fldName = label.attr("data-fld");
             var fld = $("[name='" + fldName + "']");
             if ( fld.length > 0 ) {
@@ -48,6 +50,29 @@ var rule_edit = function( args ) {
                     }
                 }
             } 
+            
+            // test group
+            var dataGroup = label.attr("data-grp");
+            var grp = $("[data-grp-tgt='" + dataGroup + "']");
+            var ct = 0;
+            for ( var i = 0; i < grp.length; i++ ) {
+                var el = grp[i];
+                if ( el.selectedIndex != undefined ) {
+                    // its a selectbox
+                    if ( el.selectedIndex > 0 ) {
+                        ct++;
+                    }
+                } else {
+                    if ( el.value && el.value.trim() != "" ) {
+                        ct++;
+                    }
+                }
+            }
+            if ( ct != grp.length ) {
+                label.addClass("field_err_lbl_marker");
+                grp.addClass("field_err_marker");
+                success = false;
+            }
         });
         
         return success;
