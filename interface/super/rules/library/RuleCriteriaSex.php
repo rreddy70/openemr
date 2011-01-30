@@ -25,5 +25,9 @@ class RuleCriteriaSex extends RuleCriteria {
         return xl( "Sex" );
     }
 
+    function getView() {
+        return "sex.php";
+    }
+
 }
 ?>

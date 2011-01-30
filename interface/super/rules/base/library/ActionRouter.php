@@ -61,13 +61,24 @@ class ActionRouter {
             $view_location = base_dir() . "base/view/" . $viewName;
         }
 
+        // set viewbean in page scope
+        $viewBean = $result;
+
+        // set helpers
+        $helpers = $viewBean->helpers;
+        if ( !is_null($helpers) ) {
+            foreach( $helpers as $helper ) {
+                $helperPath = $this->resolveHelper( $helper );
+                if ( !is_null($helperPath) ) {
+                    require_once($helperPath);
+                }
+            }
+        }
+
         if ( !is_file($view_location) ) {
             // no view template
             return $result;
         }
-
-        // set viewbean in page scope
-        $viewBean = $result;
 
         $viewBean->_appRoot = $this->appRoot;
         $viewBean->_webRoot = $this->webRoot;
@@ -75,6 +86,7 @@ class ActionRouter {
 
         $template = $this->resolveTemplate( $result->_template );
         require($template);
+
         return $result;
     }
 
@@ -94,6 +106,23 @@ class ActionRouter {
             // otherwise use the basic template
             $baseTemplatesDir = base_dir() . "base/template";
             return $baseTemplatesDir . "/basic.php";
+        }
+    }
+
+    function resolveHelper( $name ) {
+        // try local
+        $location = $this->path . "/helper/" . $name;
+
+        // try common
+        if ( !is_file($location) ) {
+            $location = base_dir() . "base/helper/" . $name;
+        }
+
+        if ( is_file($location) ) {
+            // return template if its found
+            return $location;
+        } else {
+            return null;
         }
     }
 

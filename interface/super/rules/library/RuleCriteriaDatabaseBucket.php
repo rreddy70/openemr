@@ -39,5 +39,10 @@ class RuleCriteriaDatabaseBucket extends RuleCriteria {
         return $this->getLabel($this->category) . " - " . $this->getLabel($this->item);
     }
 
+    function getView() {
+        // xxx todo
+        return NULL;
+    }
+
 }
 ?>

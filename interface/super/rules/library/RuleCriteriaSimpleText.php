@@ -26,5 +26,10 @@ class RuleCriteriaSimpleText extends RuleCriteria {
         return $this->title;
     }
 
+    function getView() {
+        // xxx todo
+        return "simple_text_criteria.php";
+    }
+
 }
 ?>

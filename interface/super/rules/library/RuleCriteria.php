@@ -50,6 +50,8 @@ abstract class RuleCriteria {
     
     abstract function getTitle();
 
+    abstract function getView();
+
     function getInterval() {
         if ( is_null($this->interval) || is_null( $this->intervalType ) ) {
             return null;

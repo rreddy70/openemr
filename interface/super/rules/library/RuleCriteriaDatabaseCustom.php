@@ -47,6 +47,11 @@ class RuleCriteriaDatabaseCustom extends RuleCriteria {
         return $this->table . "." . $this->column;
     }
 
+    function getView() {
+        // xxx todo
+        return NULL;
+    }
+
     
 }
 ?>

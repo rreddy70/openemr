@@ -175,6 +175,8 @@ class RuleManager {
         $criterion = $this->gatherCriteria($rule, $stmt,
                 $this->filterCriteriaFactory );
         if ( sizeof( $criterion ) > 0 ) {
+            $criteria = $criterion[0];
+            $criteria->guid = $guid;
             return $criterion[0];
         }
 

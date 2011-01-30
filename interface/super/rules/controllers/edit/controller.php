@@ -63,8 +63,10 @@ class Controller_edit extends BaseController {
 
         $this->viewBean->rule = $rule;
         $this->viewBean->criteria = $criteria;
-        
-        echo get_class( $criteria );
+
+        $this->addHelper("common.php");
+
+        $this->set_view( $criteria->getView(), "criteria.php" );
     }
 }
 ?>

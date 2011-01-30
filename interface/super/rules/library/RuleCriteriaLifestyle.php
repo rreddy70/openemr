@@ -32,5 +32,11 @@ class RuleCriteriaLifestyle extends RuleCriteria {
         $label = xl_layout_label( $this->getLabel( $this->type) );
         return xl( "Lifestyle" ) . " - " . $label;
     }
+
+    function getView() {
+        // xxx todo
+        return NULL;
+    }
+
 }
 ?>

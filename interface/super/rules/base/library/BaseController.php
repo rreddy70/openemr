@@ -56,5 +56,11 @@ abstract class BaseController {
         return $this->ruleManager;
     }
 
+    public function addHelper( $helper ) {
+        if ( is_null($this->viewBean->helpers) ) {
+            $this->viewBean->helpers = array();
+        }
+        array_push($this->viewBean->helpers, $helper);
+    }
 }
 ?>

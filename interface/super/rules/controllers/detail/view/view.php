@@ -66,8 +66,8 @@
             <?php foreach($filters->criteria as $criteria) { ?> 
                 <div>
                     <span class="left_col">
-                        <a href="index.php?action=edit!filter&guid=<?php echo $criteria->guid ?>" class="action_link">(<?php out('edit') ?>)</a>
-                        <a href="index.php?action=delete!filter&guid=<?php echo $criteria->guid ?>" class="action_link">(delete)</a></span>
+                        <a href="index.php?action=edit!filter&id=<?php echo $rule->id ?>&guid=<?php echo $criteria->guid ?>" class="action_link">(<?php out('edit') ?>)</a>
+                        <a href="index.php?action=delete!filter&id=<?php echo $rule->id ?>&guid=<?php echo $criteria->guid ?>" class="action_link">(delete)</a></span>
                     <span class="mid_col"><?php echo( $criteria->getTitle() ) ?></span>
                     <span class="mid_col"><?php echo( $criteria->getCharacteristics() ) ?></span>
                     <span class="end_col"><?php echo( $criteria->getRequirements() ) ?></span>

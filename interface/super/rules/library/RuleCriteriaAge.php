@@ -30,14 +30,18 @@ class RuleCriteriaAge extends RuleCriteria {
 
     function getTitle() {
         $title = xl( "Age" );
-        if ( $this->type == 'min' ) {
-            $tile .= " " . xl( "min" );
+        if ( $this->type == "min" ) {
+            $title .= " " . xl( "Min" );
         } else {
-            $tile .= " " . xl( "max" );
+            $title .= " " . xl( "Max" );
         }
 
         $title .= " (" . $this->timeUnit->lbl . ")";
         return $title;
+    }
+
+    function getView() {
+        return "age.php";
     }
 
 }
