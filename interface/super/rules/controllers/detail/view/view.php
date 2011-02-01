@@ -91,7 +91,10 @@
 
             <?php foreach($targets->criteria as $criteria) { ?>
                 <div>
-                    <span class="left_col"><a href="" class="action_link">(<?php out('edit') ?>)</a> <a href="" class="action_link">(delete)</a></span>
+                    <span class="left_col">
+                        <a href="index.php?action=edit!target&id=<?php echo $rule->id ?>&guid=<?php echo $criteria->guid ?>" class="action_link">(<?php out('edit') ?>)</a>
+                        <a href="index.php?action=delete!target&id=<?php echo $rule->id ?>&guid=<?php echo $criteria->guid ?>" class="action_link">(delete)</a></span>
+                    </span>
                     <span class="mid_col"><?php echo( $criteria->getTitle() ) ?></span>
                     <span class="mid_col"><?php echo( $criteria->getCharacteristics() ) ?></span>
                     <span class="end_col">

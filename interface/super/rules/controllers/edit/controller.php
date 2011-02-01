@@ -68,5 +68,28 @@ class Controller_edit extends BaseController {
 
         $this->set_view( $criteria->getView(), "criteria.php" );
     }
+
+    function _action_target() {
+        $ruleId = _get('id');
+        $rule = $this->getRuleManager()->getRule( $ruleId );
+        $guid = _get('guid');
+        $criteria = $this->getRuleManager()->getRuleTargetCriteria($rule, $guid);
+
+        $this->viewBean->rule = $rule;
+        $this->viewBean->criteria = $criteria;
+
+        $this->addHelper("common.php");
+
+        $this->set_view( $criteria->getView(), "criteria.php" );
+    }
+
+    function _action_codes() {
+        $search = _get('q');
+        $codes = $this->getCodeManager()->search( $search );
+        foreach( $codes as $code ) {
+            echo $code->display() . "|". $code->id . "\n";
+        }
+    }
+
 }
 ?>

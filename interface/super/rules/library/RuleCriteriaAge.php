@@ -40,6 +40,14 @@ class RuleCriteriaAge extends RuleCriteria {
         return $title;
     }
 
+    function getType() {
+        if ( $this->type == "min" ) {
+            return xl( "Min" );
+        } else {
+            return xl( "Max" );
+        }
+    }
+
     function getView() {
         return "age.php";
     }

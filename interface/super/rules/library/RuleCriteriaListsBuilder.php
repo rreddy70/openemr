@@ -20,7 +20,7 @@ class RuleCriteriaListsBuilder extends RuleCriteriaBuilder {
                 return new RuleCriteriaSimpleText( xl( "Medical Issue" ), $exploded[1] );
             } else {
                 // assume its a diagnosis
-                return new RuleCriteriaSimpleText( xl( "Diagnosis" ), $exploded[0] . " " . $exploded[1] );
+                return new RuleCriteriaDiagnosis( xl( "Diagnosis" ), $exploded[0], $exploded[1] );
             }
         } else if ( $methodDetail == 'medication' ) {
             // its a medication

@@ -137,3 +137,7 @@ root {
     width:90px;
     margin-top:-1px;
 }
+
+input[type='text'].short {
+    width: 80px;
+}

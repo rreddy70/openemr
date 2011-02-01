@@ -12,6 +12,11 @@ require_once( library_src( 'RuleCriteriaFactory.php') );
  * @author aron
  */
 class RuleCriteriaTargetFactory extends RuleCriteriaFactory {
+    const SQL_RULE_INTERVAL =
+    "SELECT * FROM rule_target
+     WHERE method = 'target_interval'
+       AND id = ?";
+
     var $strategyMap;
 
     function __construct() {
@@ -25,5 +30,17 @@ class RuleCriteriaTargetFactory extends RuleCriteriaFactory {
     function getStrategyMap() {
         return $this->strategyMap;
     }
+
+    /**
+     *
+     * @param RuleCriteria $criteria
+     */
+    function modify($criteria, $ruleId) {
+        // get interval
+        $result = sqlQuery( self::SQL_RULE_INTERVAL, array($ruleId) );
+        $criteria->interval = $result['interval'];
+        $criteria->intervalType = TimeUnit::from( $result['value'] );
+    }
+
 }
 ?>

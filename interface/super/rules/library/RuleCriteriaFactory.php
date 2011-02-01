@@ -33,9 +33,14 @@ abstract class RuleCriteriaFactory {
         $criteria->optional = $optional;
         $criteria->guid = $guid;
 
+        $this->modify($criteria, $ruleId);
+
         return $criteria;
     }
 
     abstract function getStrategyMap();
+
+    abstract function modify($criteria, $ruleId);
+
 }
 ?>

@@ -29,17 +29,16 @@ class RuleManager {
        FROM rule_filter WHERE id = ?";
 
     const SQL_RULE_TARGET =
-    "SELECT *
+    "SELECT PASSWORD(CONCAT( id, group_id, include_flag, required_flag, method, value, rule_target.interval )) AS guid, rule_target.*
        FROM rule_target WHERE id = ?";
 
     const SQL_RULE_FILTER_BY_GUID =
     "SELECT * FROM rule_filter
      WHERE PASSWORD(CONCAT( id, include_flag, required_flag, method, method_detail, value )) = ?";
 
-    const SQL_RULE_INTERVAL =
-    "SELECT * FROM rule_target 
-     WHERE method = 'target_interval'
-       AND id = ?";
+    const SQL_RULE_TARGET_BY_GUID =
+    "SELECT * FROM rule_target
+     WHERE PASSWORD(CONCAT( id, group_id, include_flag, required_flag, method, value, rule_target.interval )) = ?";
 
     const SQL_RULE_ACTIONS =
     "SELECT * FROM rule_action
@@ -183,6 +182,23 @@ class RuleManager {
         return null;
     }
 
+        /**
+     * @param string $guid
+     * @return RuleCriteria
+     */
+    function getRuleTargetCriteria( $rule, $guid ) {
+        $stmt = sqlStatement( self::SQL_RULE_TARGET_BY_GUID, array( $guid ) );
+        $criterion = $this->gatherCriteria($rule, $stmt, $this->targetCriteriaFactory );
+
+        if ( sizeof( $criterion ) > 0 ) {
+            $criteria = $criterion[0];
+            $criteria->guid = $guid;
+            return $criterion[0];
+        }
+
+        return null;
+    }
+
     /**
      * Given a sql source for gathering rule criteria (target or filter), this
      * method relies on its supplied subtype of RuleCriteriaFactory to parse out
@@ -207,23 +223,15 @@ class RuleManager {
             $criteria = $factory->build( $rule->id, $guid, $inclusion, $optional,
                     $method, $methodDetail, $value );
 
-
             if ( is_null($criteria) ) {
                 // unrecognized critera
                 continue;
             }
 
-            // get interval
-            $intervalSql = sqlStatement( self::SQL_RULE_INTERVAL, array($rule->id) );
-            if (sqlNumRows($intervalSql) > 0) {
-                $result = sqlFetchArray( $intervalSql );
-                $criteria->interval = $result['interval'];
-                $criteria->intervalType = TimeUnit::from( $result['value'] );
-            }
-
             // else
-            $criterion[] = $criteria;
+            array_push($criterion, $criteria );
         }
+
         return $criterion;
     }
 

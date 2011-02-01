@@ -13,6 +13,7 @@ abstract class BaseController {
 
     var $viewBean;
     var $ruleManager;
+    var $codeManager;
 
     public function _action_error() {
         $this->viewBean->_view = "error.php";
@@ -54,6 +55,13 @@ abstract class BaseController {
             $this->ruleManager = new RuleManager();
         }
         return $this->ruleManager;
+    }
+
+    public function getCodeManager() {
+        if ( !$this->codeManager ) {
+            $this->codeManager = new CodeManager();
+        }
+        return $this->codeManager;
     }
 
     public function addHelper( $helper ) {

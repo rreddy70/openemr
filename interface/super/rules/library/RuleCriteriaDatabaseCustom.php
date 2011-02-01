@@ -48,8 +48,7 @@ class RuleCriteriaDatabaseCustom extends RuleCriteria {
     }
 
     function getView() {
-        // xxx todo
-        return NULL;
+        return "custom.php";
     }
 
     

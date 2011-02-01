@@ -25,5 +25,9 @@ class RuleCriteriaFilterFactory extends RuleCriteriaFactory {
         return $this->strategyMap;
     }
 
+    function modify($criteria, $ruleId) {
+        // noop
+    }
+
 }
 ?>

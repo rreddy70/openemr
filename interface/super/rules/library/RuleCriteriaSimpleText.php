@@ -27,7 +27,6 @@ class RuleCriteriaSimpleText extends RuleCriteria {
     }
 
     function getView() {
-        // xxx todo
         return "simple_text_criteria.php";
     }
 

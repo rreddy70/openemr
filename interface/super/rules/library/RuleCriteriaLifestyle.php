@@ -34,8 +34,25 @@ class RuleCriteriaLifestyle extends RuleCriteria {
     }
 
     function getView() {
-        // xxx todo
-        return NULL;
+        return "lifestyle.php";
+    }
+
+    function getOptions() {
+
+        $stmt = sqlStatement(
+            "SELECT field_id, title FROM layout_options "
+           ."WHERE form_id = 'HIS' AND group_name LIKE '%Lifestyle%'" );
+
+        $options = array();
+
+        for( $iter=0; $row=sqlFetchArray($stmt); $iter++ ) {
+            $id = $row['field_id'];
+            $label = xl_layout_label( $row['title'] );
+            $option = new Option( $id, $label );
+            array_push( $options, $option );
+        }
+
+        return $options;
     }
 
 }
