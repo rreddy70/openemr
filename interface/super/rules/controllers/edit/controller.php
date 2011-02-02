@@ -91,5 +91,16 @@ class Controller_edit extends BaseController {
         }
     }
 
+    function _action_columns() {
+        $columns = array();
+        $table = _get('table');
+        $stmts = sqlStatement( "SHOW COLUMNS FROM " . $table );
+        for($iter=0; $row=sqlFetchArray($stmts); $iter++) {
+//            $columns[] = array( "column" => $row['Field'] );
+            $columns[] = $row['Field'];
+        }
+        $this->emit_json($columns);
+    }
+
 }
 ?>

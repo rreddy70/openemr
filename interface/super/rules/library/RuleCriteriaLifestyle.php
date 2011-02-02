@@ -48,7 +48,7 @@ class RuleCriteriaLifestyle extends RuleCriteria {
         for( $iter=0; $row=sqlFetchArray($stmt); $iter++ ) {
             $id = $row['field_id'];
             $label = xl_layout_label( $row['title'] );
-            $option = new Option( $id, $label );
+            $option = array( "id"=>$id, "label"=>$label );
             array_push( $options, $option );
         }
 

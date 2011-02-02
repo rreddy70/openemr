@@ -51,6 +51,16 @@ class RuleCriteriaDatabaseCustom extends RuleCriteria {
         return "custom.php";
     }
 
+    function getTableNameOptions() {
+        $options = array();
+        $stmts = sqlStatement( "SHOW TABLES" );
+        for($iter=0; $row=sqlFetchArray($stmts); $iter++) {
+            foreach( $row as $key=>$value) {
+                array_push( $options, array( "id" => $value, "label" => $value ) );
+            }
+        }
+        return $options;
+    }
     
 }
 ?>

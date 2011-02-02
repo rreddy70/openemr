@@ -29,5 +29,12 @@ class RuleCriteriaSex extends RuleCriteria {
         return "sex.php";
     }
 
+    function getOptions() {
+        $options = array();
+        $options[] = array( "id" => "male", "label" => "Male" );
+        $options[] = array( "id" => "female", "label" => "Female" );
+        return $options;
+    }
+
 }
 ?>

@@ -1,10 +1,10 @@
 <p class="row">
     <span class="left_col colhead req" data-fld="fld_lifestyle"><?php echo $criteria->getTitle(); ?></span>
     <span class="end_col">
-    <?php echo lifestyle_select( array( "target" => "fld_lifestyle",
-                                        "name" => "fld_lifestyle",
-                                        "value" => $criteria->type,
-                                        "options" => $criteria->getOptions() ) ); ?>
+    <?php echo render_select( array( "target"   =>  "fld_lifestyle",
+                                     "name"     =>  "fld_lifestyle",
+                                     "value"    =>  $criteria->type,
+                                     "options"  =>  $criteria->getOptions() ) ); ?>
     </span>
 </p>
 
