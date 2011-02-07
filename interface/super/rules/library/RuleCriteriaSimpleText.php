@@ -9,7 +9,7 @@
  *
  * @author aron
  */
-class RuleCriteriaSimpleText extends RuleCriteria {
+abstract class RuleCriteriaSimpleText extends RuleCriteria {
     var $title;
     var $value;
 
@@ -28,6 +28,12 @@ class RuleCriteriaSimpleText extends RuleCriteria {
 
     function getView() {
         return "simple_text_criteria.php";
+    }
+
+    function updateFromRequest() {
+        parent::updateFromRequest();
+        $value = _post("fld_value");
+        $this->value = $value;
     }
 
 }

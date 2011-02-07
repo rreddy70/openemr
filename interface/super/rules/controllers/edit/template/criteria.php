@@ -31,9 +31,10 @@
 
 <div class="rule_detail edit text">
 
-    <form action="index.php?action=edit!submit_intervals" method="post" id="frm_submit">
+    <form action="index.php?action=edit!submit_criteria" method="post" id="frm_submit">
     <input type="hidden" name="id" value="<?php echo $rule->id ?>"/>
-    <input type="hidden" name="criteriaGuid" value="<?php echo $criteria->guid ?>"/>
+    <input type="hidden" name="guid" value="<?php echo $criteria->guid ?>"/>
+    <input type="hidden" name="type" value="<?php echo $viewBean->type ?>"/>
 
     <!-- -->
     <?php

@@ -51,5 +51,39 @@ class RuleCriteriaDatabaseBucket extends RuleCriteria {
         return "bucket.php";
     }
 
+    function getDbView() {
+        $dbView = new RuleCriteriaDbView(
+            "database",
+            "",
+            "CUSTOM::" 
+                . $this->category . "::" . $this->item . "::"
+                . ($this->completed ? "YES":"NO") . "::"
+                . $this->frequencyComparator . "::" . $this->frequency,
+            $this->optional,
+            $this->inclusion
+        );
+        return $dbView;
+    }
+
+    function updateFromRequest() {
+        parent::updateFromRequest();
+
+        $category = _post("fld_category");
+        $categoryLbl = _post("fld_category_lbl");
+        $item = _post("fld_item");
+        $itemLbl = _post("fld_item_lbl");
+        $completed = _post("fld_completed");
+        $frequency = _post("fld_frequency");
+        $frequencyComparator = _post("fld_frequency_comparator");
+
+        // xxx todo update layout options based on category and item labels
+
+//        $this->category;
+//        $this->item;
+        $this->completed = $completed == 'yes';
+        $this->frequency = $frequency;
+        $this->frequencyComparator = $frequencyComparator;
+    }
+
 }
 ?>

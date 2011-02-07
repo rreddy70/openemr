@@ -15,5 +15,6 @@ abstract class RuleCriteriaBuilder {
      * @return RuleCriteria
      */
     abstract function build( $method, $methodDetail, $value );
+
 }
 ?>

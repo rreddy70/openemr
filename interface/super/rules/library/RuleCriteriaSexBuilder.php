@@ -17,5 +17,6 @@ class RuleCriteriaSexBuilder extends RuleCriteriaBuilder {
     function build( $method, $methodDetail, $value ) {
         return new RuleCriteriaSex( $value == 'Male' );
     }
+
 }
 ?>

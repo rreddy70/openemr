@@ -12,6 +12,8 @@
     </span>
 </p>
 
+<input type="hidden" name="fld_type" value="<?php echo $criteria->type ?>"/>
+
 <br/>
 
 <!-- optional/required and inclusion/exclusion fields -->

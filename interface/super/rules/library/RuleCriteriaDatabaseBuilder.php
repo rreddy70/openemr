@@ -41,6 +41,6 @@ class RuleCriteriaDatabaseBuilder extends RuleCriteriaBuilder {
 
         return null;
     }
-    
+
 }
 ?>

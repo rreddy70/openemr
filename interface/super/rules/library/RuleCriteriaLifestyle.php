@@ -55,5 +55,33 @@ class RuleCriteriaLifestyle extends RuleCriteria {
         return $options;
     }
 
+    function getDbView() {
+        $dbView = new RuleCriteriaDbView(
+            "database",
+            "",
+            "LIFESTYLE::" . $this->type . "::" . ( is_null($this->matchValue) ? "" : $this->matchValue ),
+            $this->optional,
+            $this->inclusion
+        );
+        return $dbView;
+    }
+
+     function updateFromRequest() {
+        parent::updateFromRequest();
+        
+        $lifestyle = _post("fld_lifestyle");
+        $value = _post("fld_value");
+        $matchType = _post("fld_value_type");
+
+        $this->type = $lifestyle;
+
+        if ( $matchType == "any" ) {
+            $this->matchValue = null;
+        } else {
+            $this->matchValue = $value;
+        }
+
+    }
+
 }
 ?>

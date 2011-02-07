@@ -38,6 +38,25 @@ class RuleCriteriaDiagnosis extends RuleCriteria {
         return "diagnosis.php";
     }
 
+    function getDbView() {
+        $dbView = new RuleCriteriaDbView(
+            "lists",
+            "medical_problem",
+            $this->codeType . "::" . $this->id,
+            $this->optional,
+            $this->inclusion
+        );
+        return $dbView;
+    }
+
+    function updateFromRequest() {
+        parent::updateFromRequest();
+        $value = _post("fld_value");
+        $exploded = explode(" ", $value);
+        $diagInfo = explode(":", $exploded[0]);
+        $this->codeType = $diagInfo[0];
+        $this->id = $diagInfo[1];
+    }
 
 }
 ?>

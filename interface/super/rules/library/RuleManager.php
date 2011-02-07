@@ -67,6 +67,10 @@ class RuleManager {
             (id, method, method_detail, value)
      VALUES ( ?, ?, ?, ?)";
 
+    const SQL_UPDATE_FILTER =
+    "UPDATE rule_filter SET include_flag = ?, required_flag = ?, method = ?, method_detail = ?, value = ?
+      WHERE PASSWORD(CONCAT( id, include_flag, required_flag, method, method_detail, value )) = ?";
+
     var $filterCriteriaFactory;
     var $targetCriteriaFactory;
 
@@ -169,7 +173,7 @@ class RuleManager {
      * @param string $guid
      * @return RuleCriteria
      */
-    function getRuleFilterCriteria( $guid ) {
+    function getRuleFilterCriteria( $rule, $guid ) {
         $stmt = sqlStatement( self::SQL_RULE_FILTER_BY_GUID, array( $guid ) );
         $criterion = $this->gatherCriteria($rule, $stmt,
                 $this->filterCriteriaFactory );
@@ -188,8 +192,8 @@ class RuleManager {
      */
     function getRuleTargetCriteria( $rule, $guid ) {
         $stmt = sqlStatement( self::SQL_RULE_TARGET_BY_GUID, array( $guid ) );
-        $criterion = $this->gatherCriteria($rule, $stmt, $this->targetCriteriaFactory );
-
+        $criterion = $this->gatherCriteria($rule,
+                $stmt, $this->targetCriteriaFactory );
         if ( sizeof( $criterion ) > 0 ) {
             $criteria = $criterion[0];
             $criteria->guid = $guid;
@@ -328,6 +332,36 @@ class RuleManager {
 
             }
         }
+    }
+
+    /**
+     *
+     * @param Rule $rule
+     * @param RuleCriteria $criteria
+     */
+    function updateFilterCriteria( $rule, $criteria ) {
+        $dbView = $criteria->getDbView();
+        $method = "filt_" . $dbView->method;
+
+        // update flags
+        sqlQuery(sqlStatement( self::SQL_UPDATE_FILTER, array(
+            $dbView->inclusion ? 1 : 0,
+            $dbView->optional ? 1 : 0,
+            $dbView->method = $method,
+            $dbView->methodDetail = $dbView->methodDetail,
+            $dbView->value = $dbView->value,
+            $criteria->guid )
+        ));
+
+    }
+
+    /**
+     *
+     * @param Rule $rule
+     * @param RuleCriteria $criteria
+     */
+    function updateTargetCriteria( $rule, $criteria ) {
+
     }
 
 }

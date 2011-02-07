@@ -52,5 +52,24 @@ class RuleCriteriaAge extends RuleCriteria {
         return "age.php";
     }
 
+    function getDbView() {
+        $dbView = new RuleCriteriaDbView(
+            "age_" . $this->type,
+            $this->timeUnit->code,
+            $this->value,
+            $this->optional,
+            $this->inclusion
+        );
+        return $dbView;
+    }
+
+    function updateFromRequest() {
+        parent::updateFromRequest();
+        $age = _post("fld_value");
+        $timeUnit = TimeUnit::from( _post("fld_timeunit") );
+
+        $this->value = $age;
+        $this->timeUnit = $timeUnit;
+    }
 }
 ?>

@@ -34,7 +34,7 @@
 
 <!-- value -->
 <p class="row">
-    <span class="left_col colhead" data-field="fld_value"><?php out('Value'); ?></span>
+    <span class="left_col colhead req" data-field="fld_value"><?php out('Value'); ?></span>
     <span class="end_col">
         <select data-grp-tgt="" type="dropdown" name="fld_value_comparator" id="">
             <option id="" value="">--<?php out("Select"); ?>--</option>

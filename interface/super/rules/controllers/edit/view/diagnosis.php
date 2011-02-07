@@ -16,7 +16,7 @@
 <!-- diagnosis -->
 <p class="row">
     <span class="left_col colhead req" data-fld="fld_diagnosis"><?php echo $criteria->getTitle(); ?></span>
-    <span class="end_col"><input id="fld_value" type="text" name="fld_diagnosis" class="field" value="<?php echo $criteria->getRequirements(); ?>"></span>
+    <span class="end_col"><input id="fld_value" type="text" name="fld_value" class="field" value="<?php echo $criteria->getRequirements(); ?>"></span>
 </p>
 
 <br/>

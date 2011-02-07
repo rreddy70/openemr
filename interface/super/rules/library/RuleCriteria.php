@@ -82,5 +82,18 @@ abstract class RuleCriteria {
         return "";
     }
 
+    /**
+     * @return RuleCriteriaDbView
+     */
+    abstract function getDbView();
+
+    function updateFromRequest() {
+        $inclusion = "yes" ==  _post("fld_inclusion");
+        $optional = "yes" == _post("fld_optional");
+
+        $this->optional = $optional;
+        $this->inclusion = $inclusion;
+    }
+
 }
 ?>

@@ -36,5 +36,23 @@ class RuleCriteriaSex extends RuleCriteria {
         return $options;
     }
 
+    function getDbView() {
+        $dbView = new RuleCriteriaDbView(
+            "sex",
+            "",
+            $this->male ? "Male" : "Female",
+            $this->optional,
+            $this->inclusion
+        );
+        return $dbView;
+    }
+
+    function updateFromRequest() {
+        parent::updateFromRequest();
+
+        $sex = _post("fld_sex");
+        $this->male = $sex == 'male';
+    }
+
 }
 ?>

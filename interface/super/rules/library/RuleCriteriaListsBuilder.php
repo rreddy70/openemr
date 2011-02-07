@@ -17,18 +17,19 @@ class RuleCriteriaListsBuilder extends RuleCriteriaBuilder {
             $exploded = explode("::", $value);
             if ( $exploded[0] == "CUSTOM" ) {
                 // its a medical issue
-                return new RuleCriteriaSimpleText( xl( "Medical Issue" ), $exploded[1] );
+                return new RuleCriteriaMedicalIssue( xl( "Medical Issue" ), $exploded[1] );
             } else {
                 // assume its a diagnosis
                 return new RuleCriteriaDiagnosis( xl( "Diagnosis" ), $exploded[0], $exploded[1] );
             }
         } else if ( $methodDetail == 'medication' ) {
             // its a medication
-            return new RuleCriteriaSimpleText( xl( "Medication" ), $value );
+            return new RuleCriteriaMedication( xl( "Medication" ), $value );
         }
 
         // its unknown
         return null;
     }
+
 }
 ?>

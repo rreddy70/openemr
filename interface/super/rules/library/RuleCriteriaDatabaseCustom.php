@@ -62,5 +62,30 @@ class RuleCriteriaDatabaseCustom extends RuleCriteria {
         return $options;
     }
     
+    function getDbView() {
+        $dbView = new RuleCriteriaDbView(
+            "database",
+            "",
+            "::"
+                . $this->table . "::" . $this->column. "::"
+                . $this->valueComparator . "::" . $this->value . "::"
+                . $this->frequencyComparator . "::" . $this->frequency,
+            $this->optional,
+            $this->inclusion
+        );
+        return $dbView;
+    }
+
+    function updateFromRequest() {
+        parent::updateFromRequest();
+
+        $this->table = _post("fld_table");
+        $this->column = _post("fld_column");
+        $this->value = _post("fld_value");
+        $this->valueComparator = _post("fld_value_comparator");
+        $this->frequency = _post("fld_frequency");
+        $this->frequencyComparator = _post("fld_frequency_comparator");
+    }
+   
 }
 ?>
