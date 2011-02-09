@@ -17,13 +17,11 @@ class RuleCriteriaMedication extends RuleCriteriaSimpleText {
     }
 
     function getDbView() {
-        $dbView = new RuleCriteriaDbView(
-            "lists",
-            "medication",
-            $this->value,
-            $this->optional,
-            $this->inclusion
-        );
+        $dbView = parent::getDbView();
+
+        $dbView->method = "lists";
+        $dbView->methodDetail = "medication";
+        $dbView->value = $this->value;
         return $dbView;
     }
 

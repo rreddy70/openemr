@@ -7,7 +7,6 @@
     </script>
 </head>
 
-
 <!-- table -->
 <p class="row">
     <span class="left_col colhead req" data-field="fld_table"><?php out('Table'); ?></span>

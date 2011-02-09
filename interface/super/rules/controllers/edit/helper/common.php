@@ -19,7 +19,8 @@ General Helpers
 <p class="row">
     <span class="left_col colhead req" data-field="<?php echo $args['name']?>"><?php echo $args['title'] ?></span>
     <span class="end_col">
-        <input data-grp-tgt="<?php echo $args['target']?>" class="field <?php echo $args['class']?>"
+        <input id="<?php echo $args['id'] ? $args['id'] : ""?>"
+               data-grp-tgt="<?php echo $args['target']?>" class="field <?php echo $args['class']?>"
                type="text"
                name="<?php echo $args['name']?>"
                value="<?php echo $args['value']?>" />
@@ -63,7 +64,7 @@ Compound Helpers
                name="fld_target_interval"
                value="<?php echo $criteria->interval ?>" />
 
-        <?php echo timeunit_select( array( "target"=>"fld_target_interval", "name" => "fld_target_interval_type", "value" => $criteria->intervalType ) ); ?>
+        <?php echo timeunit_select( array( "target"=>"fld_target_interval_", "name" => "fld_target_interval_type", "value" => $criteria->intervalType ) ); ?>
     </span>
 </p>
 <?php } ?>

@@ -13,17 +13,21 @@ class RuleCriteriaDbView {
 
     var $method;
     var $methodDetail;
-    var $value;
     var $optional;
     var $inclusion;
 
+    var $interval;
+    var $intervalType;
 
-    function __construct( $method, $methodDetail, $value, $optional, $inclusion ) {
-        $this->method = $method;
-        $this->methodDetail = $methodDetail;
-        $this->value = $value;
-        $this->optional = $optional;
-        $this->inclusion = $inclusion;
+    function __construct() {
+    }
+
+    function set( $i ) {
+        $this->intervalType = $i;
+    }
+
+    function get() {
+        return $this->intervalType;
     }
 }
 ?>

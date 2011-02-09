@@ -63,16 +63,15 @@ class RuleCriteriaDatabaseCustom extends RuleCriteria {
     }
     
     function getDbView() {
-        $dbView = new RuleCriteriaDbView(
-            "database",
-            "",
-            "::"
+        $dbView = parent::getDbView();
+
+        $dbView->method = "database";
+        $dbView->methodDetail = "";
+        $dbView->value =
+                "::"
                 . $this->table . "::" . $this->column. "::"
                 . $this->valueComparator . "::" . $this->value . "::"
-                . $this->frequencyComparator . "::" . $this->frequency,
-            $this->optional,
-            $this->inclusion
-        );
+                . $this->frequencyComparator . "::" . $this->frequency;
         return $dbView;
     }
 

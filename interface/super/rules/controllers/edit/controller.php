@@ -93,6 +93,22 @@ class Controller_edit extends BaseController {
         }
     }
 
+    function _action_categories() {
+        $stmts = sqlStatement( "SELECT option_id, title FROM list_options WHERE list_id='rule_action_category'" );
+        for($iter=0; $row=sqlFetchArray($stmts); $iter++) {
+            $columns[] = array( "code" => $row['option_id'], "lbl" => $row['title'] );
+        }
+        $this->emit_json($columns);
+    }
+
+    function _action_items() {
+        $stmts = sqlStatement( "SELECT option_id, title FROM list_options WHERE list_id='rule_action'" );
+        for($iter=0; $row=sqlFetchArray($stmts); $iter++) {
+            $columns[] = array( "code" => $row['option_id'], "lbl" => $row['title'] );
+        }
+        $this->emit_json($columns);
+    }
+
     function _action_columns() {
         $columns = array();
         $table = _get('table');
@@ -126,6 +142,8 @@ class Controller_edit extends BaseController {
             echo "value: " . $dbView->value . "<br/>";
             echo "inclusion: " . $dbView->inclusion . "<br/>";
             echo "optional: " . $dbView->optional . "<br/>";
+            echo "interval: " . $dbView->interval . "<br/>";
+            echo "intervalType: " . $dbView->intervalType . "<br/>";
 
             $criteria->updateFromRequest();
             $dbView = $criteria->getDbView();
@@ -136,6 +154,8 @@ class Controller_edit extends BaseController {
             echo "value: " . $dbView->value . "<br/>";
             echo "inclusion: " . $dbView->inclusion . "<br/>";
             echo "optional: " . $dbView->optional . "<br/>";
+            echo "interval: " . $dbView->interval . "<br/>";
+            echo "intervalType: " . $dbView->intervalType . "<br/>";
 
             if ( $type == "filter" ) {
                 $this->ruleManager->updateFilterCriteria( $rule, $criteria );
@@ -145,7 +165,6 @@ class Controller_edit extends BaseController {
         }
 
         $this->redirect("index.php?action=detail!view&id=$ruleId");
-
     }
 
 }

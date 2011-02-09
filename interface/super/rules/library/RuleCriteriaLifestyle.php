@@ -56,13 +56,11 @@ class RuleCriteriaLifestyle extends RuleCriteria {
     }
 
     function getDbView() {
-        $dbView = new RuleCriteriaDbView(
-            "database",
-            "",
-            "LIFESTYLE::" . $this->type . "::" . ( is_null($this->matchValue) ? "" : $this->matchValue ),
-            $this->optional,
-            $this->inclusion
-        );
+        $dbView = parent::getDbView();
+
+        $dbView->method = "database";
+        $dbView->methodDetail = "";
+        $dbView->value = "LIFESTYLE::" . $this->type . "::" . ( is_null($this->matchValue) ? "" : $this->matchValue );
         return $dbView;
     }
 

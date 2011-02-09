@@ -1,15 +1,27 @@
+<head>
+    <script language="javascript" src="<?php js_src('bucket.js') ?>"></script>
+
+    <script type="text/javascript">
+        var bucket = new bucket( {} );
+        bucket.init();
+    </script>
+</head>
+
 <!-- category -->
-<?php echo textfield_row(array("name" => "fld_category_lbl",
+<?php echo textfield_row(array("id" => "fld_category_lbl",
+                               "name" => "fld_category_lbl",
                                "title" => xl("Category"),
                                "value" => $criteria->getCategoryLabel() ) ); ?>
-<input type="hidden" name="fld_category" value="<?php echo $criteria->category?>" />
+<br/><a href="javascript:;" id="change_category">(change)</a>
+<input type="hidden" id="fld_category" name="fld_category" value="<?php echo $criteria->category?>" />
 
 <!-- item -->
-<?php echo textfield_row(array("name" => "fld_item_lbl",
+<?php echo textfield_row(array("id" => "fld_item_lbl",
+                               "name" => "fld_item_lbl",
                                "title" => xl("Item"),
                                "value" => $criteria->getItemLabel() ) ); ?>
-<input type="hidden" name="fld_item" value="<?php echo $criteria->item?>" />
-
+<br/><a href="javascript:;" id="change_item">(change)</a>
+<input type="hidden" id="fld_item" name="fld_item" value="<?php echo $criteria->item?>" />
 
 <!-- completed -->
 <p class="row">

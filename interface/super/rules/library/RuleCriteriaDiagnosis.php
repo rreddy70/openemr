@@ -39,13 +39,11 @@ class RuleCriteriaDiagnosis extends RuleCriteria {
     }
 
     function getDbView() {
-        $dbView = new RuleCriteriaDbView(
-            "lists",
-            "medical_problem",
-            $this->codeType . "::" . $this->id,
-            $this->optional,
-            $this->inclusion
-        );
+        $dbView = parent::getDbView();
+
+        $dbView->method = "lists";
+        $dbView->methodDetail = "medical_problem";
+        $dbView->value = $this->codeType . "::" . $this->id;
         return $dbView;
     }
 

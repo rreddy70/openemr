@@ -71,6 +71,10 @@ class RuleManager {
     "UPDATE rule_filter SET include_flag = ?, required_flag = ?, method = ?, method_detail = ?, value = ?
       WHERE PASSWORD(CONCAT( id, include_flag, required_flag, method, method_detail, value )) = ?";
 
+    const SQL_UPDATE_TARGET =
+    "UPDATE rule_target SET include_flag = ?, required_flag = ?, method = ?, value = ?
+       WHERE PASSWORD(CONCAT( id, group_id, include_flag, required_flag, method, value, rule_target.interval )) = ?";
+
     var $filterCriteriaFactory;
     var $targetCriteriaFactory;
 
@@ -361,6 +365,31 @@ class RuleManager {
      * @param RuleCriteria $criteria
      */
     function updateTargetCriteria( $rule, $criteria ) {
+        $dbView = $criteria->getDbView();
+        $method = "target_" . $dbView->method;
+
+        // update flags
+        sqlQuery(sqlStatement( self::SQL_UPDATE_TARGET, array(
+            $dbView->inclusion ? 1 : 0,
+            $dbView->optional ? 1 : 0,
+            $dbView->method = $method,
+            $dbView->value = $dbView->value,
+            $criteria->guid )
+        ));
+
+        // update interval
+        $intervalSql =
+            "UPDATE rule_target
+                SET rule_target.value = ?, rule_target.interval = ?
+              WHERE rule_target.method = ?
+                AND rule_target.id = ?";
+
+        sqlQuery(sqlStatement( $intervalSql, array(
+            $dbView->intervalType,
+            $dbView->interval,
+            'target_interval',
+            $rule->id )
+        ));
 
     }
 

@@ -85,14 +85,27 @@ abstract class RuleCriteria {
     /**
      * @return RuleCriteriaDbView
      */
-    abstract function getDbView();
+    function getDbView() {
+        $dbView = new RuleCriteriaDbView();
+        $dbView->inclusion = $this->inclusion;
+        $dbView->optional = $this->optional;
+        $dbView->interval = $this->interval;
+        $dbView->intervalType = $this->intervalType->code;
+    
+        return $dbView;
+    }
 
     function updateFromRequest() {
         $inclusion = "yes" ==  _post("fld_inclusion");
         $optional = "yes" == _post("fld_optional");
 
+        $interval = _post("fld_target_interval");
+        $intervalType = TimeUnit::from( _post("fld_target_interval_type") );
+
         $this->optional = $optional;
         $this->inclusion = $inclusion;
+        $this->interval = $interval;
+        $this->intervalType = $intervalType;
     }
 
 }

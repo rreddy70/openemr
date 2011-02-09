@@ -37,13 +37,11 @@ class RuleCriteriaSex extends RuleCriteria {
     }
 
     function getDbView() {
-        $dbView = new RuleCriteriaDbView(
-            "sex",
-            "",
-            $this->male ? "Male" : "Female",
-            $this->optional,
-            $this->inclusion
-        );
+        $dbView = parent::getDbView();
+
+        $dbView->method = "sex";
+        $dbView->methodDetail = "";
+        $dbView->value = $this->male ? "Male" : "Female";
         return $dbView;
     }
 

@@ -18,13 +18,11 @@ class RuleCriteriaMedicalIssue extends RuleCriteriaSimpleText {
     }
 
     function getDbView() {
-        $dbView = new RuleCriteriaDbView(
-            "lists",
-            "medical_problem",
-            "CUSTOM::" . $this->value,
-            $this->optional,
-            $this->inclusion
-        );
+        $dbView = parent::getDbView();
+
+        $dbView->method = "lists";
+        $dbView->methodDetail = "medical_problem";
+        $dbView->value = "CUSTOM::" . $this->value;
         return $dbView;
     }
 

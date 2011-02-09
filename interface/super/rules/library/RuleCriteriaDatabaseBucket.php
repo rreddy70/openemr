@@ -12,6 +12,8 @@
 class RuleCriteriaDatabaseBucket extends RuleCriteria {
     var $category;
     var $item;
+    var $categoryLbl;
+    var $itemLbl;
     var $completed;
     var $frequencyComparator;
     var $frequency;
@@ -19,7 +21,9 @@ class RuleCriteriaDatabaseBucket extends RuleCriteria {
     function __construct( $category, $item, $completed,
                     $frequencyComparator, $frequency ) {
         $this->category = $category;
+        $this->categoryLbl = $this->getLabel($this->category);
         $this->item = $item;
+        $this->itemLbl = $this->getLabel($this->item);
         $this->completed = $completed;
         $this->frequencyComparator = $frequencyComparator;
         $this->frequency = $frequency;
@@ -40,11 +44,11 @@ class RuleCriteriaDatabaseBucket extends RuleCriteria {
     }
 
     function getCategoryLabel() {
-        return $this->getLabel($this->category);
+        return $this->categoryLbl;
     }
 
     function getItemLabel() {
-        return $this->getLabel($this->item);
+        return $this->itemLbl;
     }
 
     function getView() {
@@ -52,16 +56,16 @@ class RuleCriteriaDatabaseBucket extends RuleCriteria {
     }
 
     function getDbView() {
-        $dbView = new RuleCriteriaDbView(
-            "database",
-            "",
-            "CUSTOM::" 
+        $dbView = parent::getDbView();
+
+        $dbView->method = "database";
+        $dbView->methodDetail = "";
+        $dbView->value =
+                  "CUSTOM::"
                 . $this->category . "::" . $this->item . "::"
                 . ($this->completed ? "YES":"NO") . "::"
-                . $this->frequencyComparator . "::" . $this->frequency,
-            $this->optional,
-            $this->inclusion
-        );
+                . $this->frequencyComparator . "::" . $this->frequency;
+
         return $dbView;
     }
 
@@ -76,13 +80,35 @@ class RuleCriteriaDatabaseBucket extends RuleCriteria {
         $frequency = _post("fld_frequency");
         $frequencyComparator = _post("fld_frequency_comparator");
 
-        // xxx todo update layout options based on category and item labels
-
-//        $this->category;
-//        $this->item;
         $this->completed = $completed == 'yes';
         $this->frequency = $frequency;
         $this->frequencyComparator = $frequencyComparator;
+
+        // update labels
+        // xxx todo abstract this out to a manager (which may or may not defer to core options handling code)!
+        // xxx this belongs more in the rule manager
+        $dbLbl = getLabel($category);
+        if ( $category && $dbLbl != $categoryLbl ) {
+            // update
+            sqlQuery(sqlStatement( "UPDATE list_options SET title = ? WHERE list_id = 'rule_action_category' AND option_id = ?", array(
+                $categoryLbl,
+                $category )
+            ));
+        }
+
+        $dbLbl = getLabel($item);
+        if ( $item && $dbLbl != $itemLbl ) {
+            // update
+            sqlQuery(sqlStatement( "UPDATE list_options SET title = ? WHERE list_id = 'rule_action' AND option_id = ?", array(
+                $itemLbl,
+                $item )
+            ));
+        }
+
+        $this->category = $category;
+        $this->item = $item;
+        $this->itemLbl = $itemLbl;
+        $this->categoryLbl = $categoryLbl;
     }
 
 }
