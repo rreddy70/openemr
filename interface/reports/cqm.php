@@ -58,7 +58,12 @@ $provider  = trim($_POST['form_provider']);
 
  function GenXml() {
 	  top.restoreSession();
-	  var sLoc = '../../custom/export_registry_xml.php?&target_date=' + theform.target_date.value;
+
+	  var sNested = 'true';
+	  if ( theform.rule_filter.value == 'cqm' ) {
+		  sNested = 'false';
+	  }
+	  var sLoc = '../../custom/export_registry_xml.php?&target_date=' + theform.target_date.value + '&nested=' + sNested;
 	  dlgopen(sLoc, '_blank', 600, 500);
 	  return false;
 }
@@ -208,13 +213,12 @@ $provider  = trim($_POST['form_provider']);
 						<?php echo htmlspecialchars( xl('Submit'), ENT_NOQUOTES); ?>
 					</span>
 					</a>
+					<?php if ($_POST['form_refresh']) { ?>
 					<a href='#' class='css_button' onclick='return GenXml()'>
 						<span>
-							<?php echo htmlspecialchars( xl('Send PQRI report'), ENT_NOQUOTES); ?>
+							<?php echo htmlspecialchars( xl('Generate PQRI report'), ENT_NOQUOTES); ?>
 						</span>
 					</a>
-
-					<?php if ($_POST['form_refresh']) { ?>
 					<a href='#' class='css_button' onclick='window.print()'>
 						<span>
 							<?php echo htmlspecialchars( xl('Print'), ENT_NOQUOTES); ?>
@@ -302,8 +306,8 @@ $provider  = trim($_POST['form_provider']);
        }
      }
      else { // isset($row['is_sub'])
-       //echo generate_display_field(array('data_type'=>'1','list_id'=>'rule_action_category'),$row['action_category']);
-       //echo ": " . generate_display_field(array('data_type'=>'1','list_id'=>'rule_action'),$row['action_item']);
+       echo generate_display_field(array('data_type'=>'1','list_id'=>'rule_action_category'),$row['action_category']);
+       echo ": " . generate_display_field(array('data_type'=>'1','list_id'=>'rule_action'),$row['action_item']);
      }
      echo "</td>";
      echo "<td align='center'>" . $row['total_patients'] . "</td>";
@@ -362,7 +366,11 @@ $provider  = trim($_POST['form_provider']);
 <?php } ?>
 
 <input type='hidden' name='form_refresh' id='form_refresh' value=''/>
-<input type='hidden' name='target_date' value='<?php echo $target_date?>'/>
+<input type='hidden' name='provider' value='<?php echo htmlspecialchars($provider, ENT_QUOTES) ?>'/>
+<input type='hidden' name='rule_filter'  value='<?php echo htmlspecialchars($rule_filter, ENT_QUOTES) ?>'/>
+<input type='hidden' name='target_date' value='<?php echo htmlspecialchars($target_date, ENT_QUOTES) ?>'/>
+<input type='hidden' name='plan_filter' value='<?php echo htmlspecialchars($plan_filter, ENT_QUOTES) ?>'/>
+<input type='hidden' name='organize_method' value='<?php echo htmlspecialchars($organize_method, ENT_QUOTES) ?>'/>
 
 </form>
 

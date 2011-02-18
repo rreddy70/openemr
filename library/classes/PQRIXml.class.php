@@ -1,9 +1,15 @@
 <?php 
+ // Copyright (C) 2011 Ensoftek 
+ //
+ // This program is free software; you can redistribute it and/or
+ // modify it under the terms of the GNU General Public License
+ // as published by the Free Software Foundation; either version 2
+ // of the License, or (at your option) any later version.
+
+ // This program implements the XML Writer to generate PQRI 2009 XML.
+
 require_once("XmlWriterOemr.class.php");
-/*
- *  Copyright © 20111 by Ensoftek
- *  
-  */
+
 class PQRIXml extends XmlWriterOemr {
 
 	function PQRIXml($indent = '  ') {
@@ -23,8 +29,9 @@ class PQRIXml extends XmlWriterOemr {
 	
 	function add_file_audit_data() {
 		
-		$res = sqlQuery("select * from users where username='".$_SESSION{"authUser"}."'");
-			
+		$res = sqlQuery("select * from users where username=?", array($_SESSION{"authUser"}) );
+
+					
 		$this->push('file_audit_data');
 		$this->element('create-date', date("m-d-Y")); 
 		$this->element('create-time', date("H:i")); 
@@ -35,21 +42,11 @@ class PQRIXml extends XmlWriterOemr {
 		$this->pop();
 	}
 	
-	function add_registry() {
-		
-		// Get the registries
-	    $row = sqlQuery("SELECT gl_value FROM globals WHERE gl_name = 'PQRI_REGISTRY_NAME' LIMIT 1");
-	    $registry_name = $row ? $row['gl_value'] : '';
-				
-	    $row = sqlQuery("SELECT gl_value FROM globals WHERE gl_name = 'PQRI_REGISTRY_ID' LIMIT 1");
-	    $registry_id = $row ? $row['gl_value'] : '';
-
-	    $row = sqlQuery("SELECT gl_value FROM globals WHERE gl_name = 'PQRI_REGISTRY_SUBMISSION_METHOD' LIMIT 1");
-	    $submission_method = $row ? $row['gl_value'] : '';
-	    
+	function add_registry($submission_method) {
+			    
 		$this->push('registry');
-		$this->element('registry-name', $registry_name); 
-		$this->element('registry-id', $registry_id); 
+		$this->element('registry-name', $GLOBALS['pqri_registry_name']); 
+		$this->element('registry-id', $GLOBALS['pqri_registry_id']); 
 		$this->element('submit-method', $submission_method); 
 		$this->pop();
 	}
