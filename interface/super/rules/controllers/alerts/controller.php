@@ -16,22 +16,16 @@
 // For more information write to the Free Software
 // Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 // 
-
-require_once( $GLOBALS['fileroot'] . "/interface/super/rules/library/CdrAlertManager.class.php" );
-
-
 class Controller_alerts extends BaseController {
 
-    function _action_default() {
+    function _action_listactmgr() {
         $c = new CdrAlertManager();
         $this->viewBean->rules = $c->populate();
-        $this->set_view("list.php");
+        $this->set_view("list_actmgr.php");
     }
 
-    function _action_submit() {
-
-        //$this->viewBean->name = _post("name");
-        //$this->viewBean->age = _post("age");
+    
+    function _action_submitactmgr() {
 
 		$ids = _post("id");
 		$actives = _post("active");
@@ -71,15 +65,12 @@ class Controller_alerts extends BaseController {
 		        
 		        
 		}
-		//print_r($actives_final);
-		//print_r($passives_final);
-		//print_r($reminders_final);
 
 		// Reflect the changes to the database.
          $c = new CdrAlertManager();
          $c->update($ids, $actives_final, $passives_final, $reminders_final);
          
-         $this->forward("default");
+         $this->forward("listactmgr");
     }
 
 }
