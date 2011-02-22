@@ -17,8 +17,13 @@ $fake_register_globals=false;
 //
 
 
+<<<<<<< HEAD
 require_once("../interface/globals.php");
 require_once("../library/patient.inc");
+=======
+include_once("../interface/globals.php");
+include_once("../library/patient.inc");
+>>>>>>> 871c56fafd5da0ec503882d6722f19060b76f1f6
 require_once "../library/options.inc.php";
 require_once("../library/clinical_rules.php");
 require_once("../library/classes/PQRIXml.class.php");

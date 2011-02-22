@@ -56,13 +56,6 @@ $provider  = trim($_POST['form_provider']);
     document.forms[0].submit();
  }
 
- function GenXml(sNested) {
-	  top.restoreSession();
-	  var sLoc = '../../custom/export_registry_xml.php?&target_date=' + theform.form_target_date.value + '&nested=' + sNested;
-	  dlgopen(sLoc, '_blank', 600, 500);
-	  return false;
-}
-
 </script>
 
 <style type="text/css">
@@ -208,17 +201,8 @@ $provider  = trim($_POST['form_provider']);
 						<?php echo htmlspecialchars( xl('Submit'), ENT_NOQUOTES); ?>
 					</span>
 					</a>
-					<a href='#' class='css_button' onclick='return GenXml("false")'>
-						<span>
-							<?php echo htmlspecialchars( xl('Generate PQRI report (Method A)'), ENT_NOQUOTES); ?>
-						</span>
-					</a>
-                                        <a href='#' class='css_button' onclick='return GenXml("true")'>
-                                                <span>
-                                                        <?php echo htmlspecialchars( xl('Generate PQRI report (Method E)'), ENT_NOQUOTES); ?>
-                                                </span>
-                                        </a>
-                                        <?php if ($_POST['form_refresh']) { ?>
+
+					<?php if ($_POST['form_refresh']) { ?>
 					<a href='#' class='css_button' onclick='window.print()'>
 						<span>
 							<?php echo htmlspecialchars( xl('Print'), ENT_NOQUOTES); ?>
