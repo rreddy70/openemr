@@ -17,13 +17,8 @@ $fake_register_globals=false;
 //
 
 
-<<<<<<< HEAD
 require_once("../interface/globals.php");
 require_once("../library/patient.inc");
-=======
-include_once("../interface/globals.php");
-include_once("../library/patient.inc");
->>>>>>> 871c56fafd5da0ec503882d6722f19060b76f1f6
 require_once "../library/options.inc.php";
 require_once("../library/clinical_rules.php");
 require_once("../library/classes/PQRIXml.class.php");
@@ -114,6 +109,10 @@ foreach ($dataSheet as $row) {
 	           $physician_ids['tin'] = $row['federaltaxid'];
 	       }
 	     }
+	     
+	     $physician_ids['encounter-from-date'] = '01-01-' . date('Y', strtotime($target_date )); 
+	     $physician_ids['encounter-to-date'] = '12-31-' . date('Y', strtotime($target_date ));
+	     
     	
        	 $xml->open_provider($physician_ids);
 	     $firstProviderFlag = FALSE;
