@@ -56,6 +56,13 @@ $provider  = trim($_POST['form_provider']);
     document.forms[0].submit();
  }
 
+ function GenXml(sNested) {
+	  top.restoreSession();
+	  var sLoc = '../../custom/export_registry_xml.php?&target_date=' + theform.form_target_date.value + '&nested=' + sNested;
+	  dlgopen(sLoc, '_blank', 600, 500);
+	  return false;
+}
+
 </script>
 
 <style type="text/css">
@@ -201,13 +208,22 @@ $provider  = trim($_POST['form_provider']);
 						<?php echo htmlspecialchars( xl('Submit'), ENT_NOQUOTES); ?>
 					</span>
 					</a>
-
-					<?php if ($_POST['form_refresh']) { ?>
-					<a href='#' class='css_button' onclick='window.print()'>
+					<a href='#' class='css_button' onclick='return GenXml("false")'>
 						<span>
-							<?php echo htmlspecialchars( xl('Print'), ENT_NOQUOTES); ?>
+							<?php echo htmlspecialchars( xl('Generate PQRI report (Method A)'), ENT_NOQUOTES); ?>
 						</span>
 					</a>
+                    <a href='#' class='css_button' onclick='return GenXml("true")'>
+                        <span>
+                             <?php echo htmlspecialchars( xl('Generate PQRI report (Method E)'), ENT_NOQUOTES); ?>
+                         </span>
+                    </a>
+                     <?php if ($_POST['form_refresh']) { ?>
+						<a href='#' class='css_button' onclick='window.print()'>
+							<span>
+								<?php echo htmlspecialchars( xl('Print'), ENT_NOQUOTES); ?>
+							</span>
+						</a>
 					<?php } ?>
 				</div>
 			</td>
@@ -350,6 +366,11 @@ $provider  = trim($_POST['form_provider']);
 <?php } ?>
 
 <input type='hidden' name='form_refresh' id='form_refresh' value=''/>
+<input type='hidden' name='provider' value='<?php echo htmlspecialchars($provider, ENT_QUOTES) ?>'/>
+<input type='hidden' name='rule_filter'  value='<?php echo htmlspecialchars($rule_filter, ENT_QUOTES) ?>'/>
+<input type='hidden' name='target_date' value='<?php echo htmlspecialchars($target_date, ENT_QUOTES) ?>'/>
+<input type='hidden' name='plan_filter' value='<?php echo htmlspecialchars($plan_filter, ENT_QUOTES) ?>'/>
+<input type='hidden' name='organize_method' value='<?php echo htmlspecialchars($organize_method, ENT_QUOTES) ?>'/>
 
 </form>
 
