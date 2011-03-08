@@ -1,6 +1,7 @@
 <table class="header">
   <tr>
-        <td class="title"><?php out('Clinical Decision Rules Alert Manager'); ?></td>
+        <td class="title"><?php echo htmlspecialchars(xl('Clinical Decision Rules Alert Manager'), ENT_NOQUOTES); ?></td>
+        
   </tr>
   <tr>
         <td>
@@ -14,39 +15,39 @@
 <form name="cdralertmgr" method="post" action="index.php?action=alerts!submitactmgr" >
 <table cellpadding="1" cellspacing="0" class="showborder">
         <tr class="showborder_head">
-                <th width="250px">Title</th>
+                <th width="250px"><?php echo htmlspecialchars( xl('Title'), ENT_NOQUOTES); ?></th>
                 <th width="40px">&nbsp;</th>
-                <th width="10px">Active</th>
+                <th width="10px"><?php echo htmlspecialchars( xl('Active Alert'), ENT_NOQUOTES); ?></th>
                 <th width="40px">&nbsp;</th>
-                <th width="10px">Passive</th>
+                <th width="10px"><?php echo htmlspecialchars( xl('Passive ALert'), ENT_NOQUOTES); ?></th>
                 <th width="40px">&nbsp;</th>
-                <th width="10px">Reminders</th>
+                <th width="10px"><?php echo htmlspecialchars( xl('Patient Reminder'), ENT_NOQUOTES); ?></th>
                 <th></th>
         </tr>
         <?php $index = -1; ?>
         <?php foreach($viewBean->rules as $rule) {?>
         <?php $index++; ?>
         <tr height="22">
-                <td><?php out($rule->get_rule());?></td>
+                <td><?php echo htmlspecialchars(xl($rule->get_rule()), ENT_NOQUOTES);?></td>
 				<td>&nbsp;</td>
 				<?php if ($rule->active_alert_flag() == "1"){  ?>
-                	<td><input type="checkbox" name="active[<?php out($index);?>]" checked="yes"></td>
+                	<td><input type="checkbox" name="active[<?php echo $index ?>]" checked="yes"></td>
                 <?php }else {?>
-                	<td><input type="checkbox" name="active[<?php out($index);?>]" ></td>
+                	<td><input type="checkbox" name="active[<?php echo $index ?>]" ></td>
 				<?php } ?>                
 				<td>&nbsp;</td>
                 <?php if ($rule->passive_alert_flag() == "1"){ ?>
-                	<td><input type="checkbox" name="passive[<?php out($index);?>]]" checked="yes"></td>
+                	<td><input type="checkbox" name="passive[<?php echo $index ?>]]" checked="yes"></td>
                 <?php }else {?>
-	                <td><input type="checkbox" name="passive[<?php out($index);?>]]"></td>
+	                <td><input type="checkbox" name="passive[<?php echo $index ?>]]"></td>
 				<?php } ?>                
 				<td>&nbsp;</td>
                 <?php if ($rule->patient_reminder_flag() == "1"){ ?>
-                	<td><input type="checkbox" name="reminder[<?php out($index);?>]]" checked="yes"></td>
+                	<td><input type="checkbox" name="reminder[<?php echo $index ?>]]" checked="yes"></td>
                 <?php }else {?>
-	                <td><input type="checkbox" name="reminder[<?php out($index);?>]]"></td>
+	                <td><input type="checkbox" name="reminder[<?php echo $index ?>]]"></td>
 				<?php } ?>                
-                <td><input style="display:none" name="id[<?php out($index);?>]]" value=<?php out($rule->get_id()); ?> /></td>								
+                <td><input style="display:none" name="id[<?php echo $index ?>]]" value=<?php echo htmlspecialchars(xl($rule->get_id()), ENT_NOQUOTES); ?> /></td>								
         </tr>
 		<?php }?>
 </table>
