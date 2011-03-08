@@ -19,7 +19,7 @@
                 <th width="40px">&nbsp;</th>
                 <th width="10px"><?php echo htmlspecialchars( xl('Active Alert'), ENT_NOQUOTES); ?></th>
                 <th width="40px">&nbsp;</th>
-                <th width="10px"><?php echo htmlspecialchars( xl('Passive ALert'), ENT_NOQUOTES); ?></th>
+                <th width="10px"><?php echo htmlspecialchars( xl('Passive Alert'), ENT_NOQUOTES); ?></th>
                 <th width="40px">&nbsp;</th>
                 <th width="10px"><?php echo htmlspecialchars( xl('Patient Reminder'), ENT_NOQUOTES); ?></th>
                 <th></th>
