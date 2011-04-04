@@ -21,9 +21,9 @@ class RuleCriteriaDatabaseBucket extends RuleCriteria {
     function __construct( $category, $item, $completed,
                     $frequencyComparator, $frequency ) {
         $this->category = $category;
-        $this->categoryLbl = $this->getLabel($this->category);
+        $this->categoryLbl = $this->getLabel($this->category, 'rule_action_category');
         $this->item = $item;
-        $this->itemLbl = $this->getLabel($this->item);
+        $this->itemLbl = $this->getLabel($this->item, 'rule_action');
         $this->completed = $completed;
         $this->frequencyComparator = $frequencyComparator;
         $this->frequency = $frequency;
@@ -87,7 +87,7 @@ class RuleCriteriaDatabaseBucket extends RuleCriteria {
         // update labels
         // xxx todo abstract this out to a manager (which may or may not defer to core options handling code)!
         // xxx this belongs more in the rule manager
-        $dbLbl = getLabel($category);
+        $dbLbl = getLabel($category, 'rule_action_category');
         if ( $category && $dbLbl != $categoryLbl ) {
             // update
             sqlQuery(sqlStatement( "UPDATE list_options SET title = ? WHERE list_id = 'rule_action_category' AND option_id = ?", array(
@@ -96,7 +96,7 @@ class RuleCriteriaDatabaseBucket extends RuleCriteria {
             ));
         }
 
-        $dbLbl = getLabel($item);
+        $dbLbl = getLabel($item, 'rule_action');
         if ( $item && $dbLbl != $itemLbl ) {
             // update
             sqlQuery(sqlStatement( "UPDATE list_options SET title = ? WHERE list_id = 'rule_action' AND option_id = ?", array(
