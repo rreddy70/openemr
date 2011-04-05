@@ -29,7 +29,7 @@ class RuleCriteriaLifestyle extends RuleCriteria {
     }
 
     function getTitle() {
-        $label = xl_layout_label( $this->getLabel( $this->type) );
+        $label = xl_layout_label( $this->getLayoutLabel( $this->type) );
         return xl( "Lifestyle" ) . " - " . $label;
     }
 

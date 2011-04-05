@@ -68,10 +68,13 @@ abstract class RuleCriteria {
              . $this->intervalType->lbl;
     }
 
-    protected function getLabel( $value, $list_id='' ) {
+    protected function getLabel( $value, $list_id ) {
         return getLabel($value, $list_id);
     }
 
+    protected function getLayoutLabel( $value ) {
+        return getLayoutLabel($value);
+    }
     
     protected function decodeComparator( $comparator ) {
         switch ( $comparator ) {
