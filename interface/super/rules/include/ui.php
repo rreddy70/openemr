@@ -14,10 +14,10 @@
         return $value;
     }
 
-    function getLayoutLabel( $value ) {
+    function getLayoutLabel( $value, $form_id ) {
         // get from layout_options
     	$sql = sqlStatement(
-            "SELECT title from layout_options WHERE field_id = ?", array($value)
+            "SELECT title from layout_options WHERE form_id = ? and field_id = ?", array($form_id, $value)
         );
         if (sqlNumRows($sql) > 0) {
             $result = sqlFetchArray( $sql );

@@ -72,8 +72,8 @@ abstract class RuleCriteria {
         return getLabel($value, $list_id);
     }
 
-    protected function getLayoutLabel( $value ) {
-        return getLayoutLabel($value);
+    protected function getLayoutLabel( $value, $form_id ) {
+        return getLayoutLabel($value, $form_id);
     }
     
     protected function decodeComparator( $comparator ) {
