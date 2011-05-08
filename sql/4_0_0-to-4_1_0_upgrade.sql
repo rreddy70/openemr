@@ -962,3 +962,6 @@ INSERT INTO `layout_options` ( `form_id`, `field_id`, `group_name` , `title`, `s
 INSERT INTO `layout_options` ( `form_id`, `field_id`, `group_name` , `title`, `seq`, `data_type`, `uor`, `fld_length`, `max_length`, `list_id`, `titlecols`, `datacols`, `default_value`, `edit_options`, `description` ) VALUES ('DEM', 'deceased_reason', '6Misc', 'Reason Deceased', 2, 2, 1, 30, 255, '', 1, 3, '', '', 'Reason for Death.');
 #EndIf
 
+#IfMissingColumn immunizations cvx_code
+ALTER TABLE immunizations ADD COLUMN `cvx_code` int(11) default NULL;
+#EndIf
