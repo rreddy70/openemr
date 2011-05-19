@@ -12,6 +12,30 @@ include_once("../../globals.php");
 include_once("$srcdir/sql.inc");
 include_once("$srcdir/options.inc.php");
 
+function getVaccine($cvx_code, $immunization_id) {
+
+	$vaccine = "";
+	if ( ($cvx_code != null) && ($cvx_code !=0) ) {
+		$stmt = "select code_text_short as vaccine from codes where code_type = 4 and code = ?";
+	    $row = sqlQuery($stmt, array($cvx_code));
+	    $vaccine = $row['vaccine'];
+	}	
+	else {
+		$vaccine = generate_display_field(array('data_type'=>'1','list_id'=>'immunizations'), $immunization_id);
+	} 
+	
+	return $vaccine;
+}
+
+function getCvxCode() {
+	if ( isset($_GET['cvx_code']) && ($_GET['cvx_code'] != 0) ) {
+		return trim($_GET['cvx_code']);
+	}
+	else {
+		return null;
+	}
+}
+
 if (isset($_GET['mode'])) {
     
     if ($_GET['mode'] == "add" ) {
@@ -36,7 +60,7 @@ if (isset($_GET['mode'])) {
 	             trim($_GET['id']),
 		     trim($_GET['administered_date']), trim($_GET['administered_date']),
 		     trim($_GET['form_immunization_id']),
-		     trim($_GET['cvx_code']),
+		     getCvxCode(),
 		     trim($_GET['manufacturer']),
 		     trim($_GET['lot_number']),
 		     trim($_GET['administered_by_id']), trim($_GET['administered_by_id']),
@@ -348,7 +372,8 @@ var mypcc = '<?php echo htmlspecialchars( $GLOBALS['phone_country_code'], ENT_QU
                 echo "<tr class='immrow text' id='".htmlspecialchars( $row["id"], ENT_QUOTES)."'>";
             }
 	    // Modified 7/2009 by BM to utilize immunization items from the pertinent list in list_options
-            echo "<td>" . generate_display_field(array('data_type'=>'1','list_id'=>'immunizations'), $row['immunization_id']) . "</td>";
+            //echo "<td>" . generate_display_field(array('data_type'=>'1','list_id'=>'immunizations'), $row['immunization_id']) . "</td>";
+            echo "<td>" . htmlspecialchars((getVaccine($row["cvx_code"], $row['immunization_id']))) . "</td>";
             echo "<td>" . htmlspecialchars( $row["cvx_code"], ENT_NOQUOTES) . "</td>";
             echo "<td>" . htmlspecialchars( $row["administered_date"], ENT_NOQUOTES) . "</td>";
             echo "<td>" . htmlspecialchars( $row["manufacturer"], ENT_NOQUOTES) . "</td>";

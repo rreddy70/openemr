@@ -38,7 +38,7 @@ function tr($a) {
   return (str_replace(' ','^',$a));
 }
 
-
+  // Query immunizations
   $query = 
   "select " .
   "i.patient_id as patientid, " .
@@ -85,6 +85,53 @@ function tr($a) {
   "i.cvx_code = c.code ";
 
 //echo "<p> DEBUG query: $query </p>\n"; // debugging
+
+  // For backward compatibiliy, query the Lists for any immunizations
+  $query_list = 
+  "select " .
+  "i.patient_id as patientid, " .
+  "p.language, ".
+  "i.cvx_code , " ;
+  if ($_POST['form_get_hl7']==='true') {
+    $query_list .= 
+      "DATE_FORMAT(p.DOB,'%Y%m%d') as DOB, ".
+      "concat(p.street, '^',p.postal_code,'^', p.city, '^', p.state) as address, ".
+      "p.country_code, ".
+      "p.phone_home, ".
+      "p.phone_biz, ".
+      "p.status, ".
+      "p.sex, ".
+      "p.ethnoracial, ".
+      "c.code_text, ".
+      "c.code, ".
+      "c.code_type, ".
+      "DATE_FORMAT(i.vis_date,'%Y%m%d') as immunizationdate, ".
+      "concat(p.fname, '^',p.mname,'^', p.lname) as patientname, ";
+  } else {
+    $query_list .= "concat(p.fname, ' ',p.mname,' ', p.lname) as patientname, ".
+      "i.vis_date as immunizationdate, "  ;
+  }
+  $query_list .=
+  "i.id as immunizationid, l.title as immunizationtitle ".
+  "from immunizations i, patient_data p, list_options l ".
+  "where ".
+  "l.list_id='immunizations' and l.option_id=i.immunization_id and ";
+  if($from_date!=0) {
+    $query_list .= "i.vis_date >= '$from_date' " ;
+  }
+  if($from_date!=0 and $to_date!=0) {
+    $query_list .= " and " ;
+  }
+  if($to_date!=0) {
+    $query_list .= "i.vis_date <= '$to_date' ";
+  }
+  if($from_date!=0 or $to_date!=0) {
+    $query_list .= " and " ;
+  }
+  $query_list .= "i.cvx_code is null and " ;
+  $query_list .= "i.patient_id=p.pid";
+  
+//  echo "<p> DEBUG query: $query_list </p>\n"; // debugging
   
 
 $D="\r";
@@ -371,15 +418,15 @@ onsubmit='return top.restoreSession()'>
  <thead align="left">
   <th> <?php xl('Patient ID','e'); ?> </th>
   <th> <?php xl('Patient Name','e'); ?> </th>
-  <th> <?php xl('Immunization Code','e'); ?> </th>
-  <th> <?php xl('Immunization ID','e'); ?> </th>
   <th> <?php xl('Immunization Title','e'); ?> </th>
   <th> <?php xl('Immunization Date','e'); ?> </th>
+  <th> <?php xl('CVX Code','e'); ?> </th>
+  <th> <?php xl('CVX Title','e'); ?> </th>
  </thead>
  <tbody>
 <?php
   $total = 0;
-  //echo "<p> DEBUG query: $query </p>\n"; // debugging
+//  echo "<p> DEBUG query: $query </p>\n"; // debugging
   $res = sqlStatement($query);
 
 
@@ -393,10 +440,35 @@ onsubmit='return top.restoreSession()'>
    <?php echo htmlspecialchars($row['patientname']) ?>
   </td>
   <td>
+   <?php echo htmlspecialchars('') ?>
+  </td>
+  <td>
+   <?php echo htmlspecialchars($row['immunizationdate']) ?>
+  </td>
+  <td>
    <?php echo htmlspecialchars($row['cvx_code']) ?>
   </td>
   <td>
-   <?php echo htmlspecialchars($row['immunizationid']) ?>
+   <?php echo htmlspecialchars($row['immunizationtitle']) ?>
+  </td>
+ </tr>
+<?php
+   ++$total;
+  }
+?>
+
+<?php
+//  echo "<p> DEBUG query: $query_list </p>\n"; // debugging
+  $res = sqlStatement($query_list);
+
+  while ($row = sqlFetchArray($res)) {
+?>
+ <tr>
+  <td>
+  <?php echo htmlspecialchars($row['patientid']) ?>
+  </td>
+  <td>
+   <?php echo htmlspecialchars($row['patientname']) ?>
   </td>
   <td>
    <?php echo htmlspecialchars($row['immunizationtitle']) ?>
@@ -404,11 +476,19 @@ onsubmit='return top.restoreSession()'>
   <td>
    <?php echo htmlspecialchars($row['immunizationdate']) ?>
   </td>
+  <td>
+   <?php echo htmlspecialchars('') ?>
+  </td>
+  <td>
+   <?php echo htmlspecialchars('') ?>
+  </td>
  </tr>
 <?php
    ++$total;
   }
 ?>
+
+
  <tr class="report_totals">
   <td colspan='9'>
    <?php xl('Total Number of Immunizations','e'); ?>
