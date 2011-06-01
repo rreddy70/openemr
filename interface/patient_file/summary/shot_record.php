@@ -29,7 +29,7 @@ $res2 = sqlQuery("select concat(p.lname,', ',p.fname,' ',p.mname) patient_name "
 //collect immunizations
 $sqlstmt = "select date_format(i1.administered_date,'%Y-%m-%d') as '" . xl('Date') . "\n" . xl('Administered') . "' ".
             ",i1.immunization_id as '" . xl('Vaccine') . "' ".
-            ",c.code_text as cvx_text ".
+            ",c.code_text_short as cvx_text ".
             ",i1.manufacturer as '" . xl('Manufacturer') . "' ".
             ",i1.lot_number as '" . xl('Lot') . "\n" . xl('Number') . "' ".
             ",concat(u.lname,', ',u.fname) as '" . xl('Administered By') . "' ".
@@ -57,9 +57,8 @@ for ($i=0;$i<count($data);$i++) {
   if ( $data[$i][xl('Vaccine')] ) {
       $data[$i][xl('Vaccine')] = generate_display_field(array('data_type'=>'1','list_id'=>'immunizations'), $data[$i][xl('Vaccine')]);
   } else if ( $data[$i][xl('cvx_text')] ) {
-      $cvx_text_short = shorten_text( xl( $data[$i]['cvx_text'] ) );
       unset( $data[$i]['cvx_text'] );
-      $data[$i][xl('Vaccine')] = htmlspecialchars( $cvx_text_short, ENT_NOQUOTES );
+      $data[$i][xl('Vaccine')] = htmlspecialchars( $cvx_text, ENT_NOQUOTES );
   }
 }
 

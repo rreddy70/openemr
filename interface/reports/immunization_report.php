@@ -6,7 +6,7 @@
 // as published by the Free Software Foundation; either version 2
 // of the License, or (at your option) any later version.
 
-// This report lists non reported patient diagnoses for a given date range.
+// This report lists  patient immunizations for a given date range.
 
 require_once("../globals.php");
 require_once("$srcdir/patient.inc");
@@ -91,7 +91,7 @@ $D="\r";
 $nowdate = date('Ymd');
 $now = date('YmdGi');
 $now1 = date('Y-m-d G:i');
-$filename = "syn_sur_". $now . ".hl7";
+$filename = "imm_reg_". $now . ".hl7";
 
 // GENERATE HL7 FILE
 if ($_POST['form_get_hl7']==='true') {

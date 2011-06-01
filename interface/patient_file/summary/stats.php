@@ -198,7 +198,7 @@ else { ?>
 <?php } ?>
 
 <?php
-  $sql = "select i1.id as id, i1.immunization_id as immunization_id, i1.cvx_code as cvx_code, c.code_text as cvx_text, ".
+  $sql = "select i1.id as id, i1.immunization_id as immunization_id, i1.cvx_code as cvx_code, c.code_text_short as cvx_text, ".
          " if (i1.administered_date, concat(i1.administered_date,' - '), substring(i1.note,1,20)) as immunization_data ".
          " from immunizations i1 ".
   		 " left join codes c on i1.cvx_code = c.code ".
@@ -223,7 +223,7 @@ else { ?>
     if ( $row['immunization_id'] ) {
         echo generate_display_field(array('data_type'=>'1','list_id'=>'immunizations'), $row['immunization_id']);
     } else if ( $row['cvx_text'] ) {
-        echo htmlspecialchars( shorten_text( xl( $row['cvx_text'] ) ), ENT_NOQUOTES );
+        echo htmlspecialchars( $row['cvx_text'], ENT_NOQUOTES );
     }
     echo "</a><br>\n";
   }

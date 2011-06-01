@@ -70,10 +70,10 @@ if (isset($_GET['mode'])) {
             $code_text = '';
             if ( $cvx_code != '' ) {
                 $query = "SELECT code_text, code, code_type FROM codes " .
-                    "WHERE code_type = '4' AND code = '".$cvx_code."'";
-                $res = sqlStatement($query);
+                    "WHERE code_type = '4' AND code = ?";
+                $res = sqlStatement($query, array($cvx_code));
                 while ($row = sqlFetchArray($res)) {
-                  $code_text = addslashes(ucfirst(strtolower(trim($row['code_text']))));
+                  $code_text = trim($row['code_text']);
                 }
             }
             $manufacturer = $row['manufacturer'];
@@ -185,7 +185,7 @@ var mypcc = '<?php echo htmlspecialchars( $GLOBALS['phone_country_code'], ENT_QU
 		  <td>
 		   <input type='text' size='10' name='cvx_code' id='cvx_code'
 		    value='<?php echo htmlspecialchars($cvx_code,ENT_QUOTES); ?>' onclick='sel_cvxcode(this)'
-		    title='<?php xl('Click to select or change CVX code','e'); ?>'
+		    title='<?php echo htmlspecialchars( xl('Click to select or change CVX code'), ENT_QUOTES); ?>'
 		    />
 		    <div id='cvx_description' style='display:inline; float:right; padding:3px; margin-left:3px; width:400px'>
 		        <?php echo htmlspecialchars( xl( $code_text ), ENT_QUOTES); ?>
@@ -322,17 +322,17 @@ var mypcc = '<?php echo htmlspecialchars( $GLOBALS['phone_country_code'], ENT_QU
     <!-- some columns are sortable -->
     <tr class='text bold'>
     <th>
-        <a href="javascript:top.restoreSession();location.href='immunizations.php?mode=<?php echo $_GET['mode']; ?>&id=<?php echo $_GET['id']; ?>&sortby=vacc';" title='<?php echo htmlspecialchars( xl('Sort by vaccine'), ENT_QUOTES); ?>'>
+        <a href="javascript:top.restoreSession();location.href='immunizations.php?sortby=vacc';" title='<?php echo htmlspecialchars( xl('Sort by vaccine'), ENT_QUOTES); ?>'>
           <?php echo htmlspecialchars( xl('Vaccine'), ENT_NOQUOTES); ?></a>
         <span class='small' style='font-family:arial'><?php if ($sortby == 'vacc') { echo 'v'; } ?></span>
     </th>
     <th>
-        <a href="javascript:top.restoreSession();location.href='immunizations.php?<?php echo $_GET['mode']; ?>&id=<?php echo $_GET['id']; ?>&sortby=cvx';" title='<?php echo htmlspecialchars( xl('Sort by CVX code'), ENT_QUOTES); ?>'>
+        <a href="javascript:top.restoreSession();location.href='immunizations.php?sortby=cvx';" title='<?php echo htmlspecialchars( xl('Sort by CVX code'), ENT_QUOTES); ?>'>
           <?php echo htmlspecialchars( xl('CVX Code'), ENT_NOQUOTES); ?></a>
         <span class='small' style='font-family:arial'><?php if ($sortby == 'cvx') { echo 'v'; } ?></span>
     </th>
     <th>
-        <a href="javascript:top.restoreSession();location.href='immunizations.php?<?php echo $_GET['mode']; ?>&id=<?php echo $_GET['id']; ?>&sortby=date';" title='<?php echo htmlspecialchars( xl('Sort by date'), ENT_QUOTES); ?>'>
+        <a href="javascript:top.restoreSession();location.href='immunizations.php?sortby=date';" title='<?php echo htmlspecialchars( xl('Sort by date'), ENT_QUOTES); ?>'>
           <?php echo htmlspecialchars( xl('Date'), ENT_NOQUOTES); ?></a>
         <span class='small' style='font-family:arial'><?php if ($sortby == 'date') { echo 'v'; } ?></span>
     </th>
@@ -345,7 +345,7 @@ var mypcc = '<?php echo htmlspecialchars( $GLOBALS['phone_country_code'], ENT_QU
     </tr>
     
 <?php
-        $sql = "select i1.id ,i1.immunization_id, i1.cvx_code, i1.administered_date, c.code_text, c.code, c.code_type".
+        $sql = "select i1.id ,i1.immunization_id, i1.cvx_code, i1.administered_date, c.code_text_short, c.code, c.code_type".
                 ",i1.manufacturer ,i1.lot_number ".
                 ",ifnull(concat(u.lname,', ',u.fname),'Other') as administered_by ".
                 ",i1.education_date ,i1.note ".
@@ -357,7 +357,7 @@ var mypcc = '<?php echo htmlspecialchars( $GLOBALS['phone_country_code'], ENT_QU
                 " ( i1.cvx_code != '0' AND c.code_type = '4' ) ".
                 " order by ";
         if ($sortby == "vacc") { 
-            $sql .= " i1.immunization_id, c.code_text, i1.administered_date DESC"; 
+            $sql .= " i1.immunization_id, c.code_text_short, i1.administered_date DESC"; 
         }
         else if ($sortby == "cvx") { $sql .= " i1.cvx_code, i1.administered_date DESC"; }
         else { $sql .= " administered_date desc"; }
@@ -373,10 +373,9 @@ var mypcc = '<?php echo htmlspecialchars( $GLOBALS['phone_country_code'], ENT_QU
 	    // Modified 7/2009 by BM to utilize immunization items from the pertinent list in list_options
     	    $vaccine_display = generate_display_field(array('data_type'=>'1','list_id'=>'immunizations'), $row['immunization_id']);
     	    if ( $vaccine_display == '' ) {
-    	        $vaccine_display = shorten_text( xl( $row["code_text"] ) );
-                $vaccine_display = htmlspecialchars( $vaccine_display, ENT_NOQUOTES );
+    	        $vaccine_display = $row["code_text_short"];
     	    }
-            echo "<td>" . $vaccine_display . "</td>";
+            echo "<td>" . htmlspecialchars( $vaccine_display, ENT_NOQUOTES) . "</td>";
             echo "<td>" . htmlspecialchars( $row["cvx_code"], ENT_NOQUOTES) . "</td>";
             echo "<td>" . htmlspecialchars( $row["administered_date"], ENT_NOQUOTES) . "</td>";
             echo "<td>" . htmlspecialchars( $row["manufacturer"], ENT_NOQUOTES) . "</td>";
