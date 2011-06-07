@@ -82,6 +82,8 @@ foreach ($dataSheet as $row) {
 			// Add PQRI measures
  			$pqri_measures = array();
 			$pqri_measures['pqri-measure-number'] =  getMeasureNumber($row);
+			$pqri_measures['patient-population'] = $row['population_label'];
+			$pqri_measures['numerator'] = $row['numerator_label'];
 			$pqri_measures['eligible-instances'] = $row['pass_filter'];
 	       	$pqri_measures['meets-performance-instances'] = $row['pass_target'];
 		    $pqri_measures['performance-exclusion-instances'] =  $row['excluded'];
