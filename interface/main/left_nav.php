@@ -96,7 +96,6 @@
  // * Usage: 0 = global, 1 = patient-specific, 2 = encounter-specific
  // * The URL relative to the interface directory
  //
-
  $primary_docs = array(
   'ros' => array(xl('Roster')    , 0, 'reports/players_report.php?embed=1'),
   'cal' => array(xl('Calendar')  , 0, 'main/main_info.php'),
@@ -108,6 +107,8 @@
   'rep' => array(xl('Reports')   , 0, 'reports/index.php'),
   'ono' => array(xl('Ofc Notes') , 0, 'main/onotes/office_comments.php'),
   'fax' => array(xl('Fax/Scan')  , 0, 'fax/faxq.php'),
+  'ivf' => array(xl('View faxes')  , 0, 'inter_fax/inter_faxq.php'), // Ensoftek: interfax related changes
+  'isf' => array(xl('Send Fax')  , 0, 'usergroup/send_to_fax_form.php'), // Ensoftek: interfax related changes
   'adb' => array(xl('Addr Bk')   , 0, 'usergroup/addrbook_list.php'),
   'ort' => array(xl('Proc Cat')  , 0, 'orders/types.php'),
   'orb' => array(xl('Proc Bat')  , 0, 'orders/orders_results.php?batch=1'),
@@ -160,7 +161,8 @@
  $disallowed['new'] = !($tmp == 'write' || $tmp == 'addonly');
 
  $disallowed['fax'] = !($GLOBALS['enable_hylafax'] || $GLOBALS['enable_scanner']);
-
+ $disallowed['ivf'] = !($GLOBALS['enable_interfax']); // Ensoftek: interfax related changes
+ $disallowed['isf'] = !($GLOBALS['enable_interfax']); // Ensoftek: interfax related changes
  $disallowed['ros'] = !$GLOBALS['athletic_team'];
 
  $disallowed['iss'] = !((acl_check('encounters', 'notes') == 'write' ||
@@ -222,6 +224,31 @@
         $primary_docs[$botname][2] . "')\">" . $title . "</a></li>";
   }
  }
+
+// Ensoftek: interfax related changes
+ // This is the tab window equivalent of genTreeLink().
+function genTreeTab($frame, $name, $title, $subLevel=-1) {
+	global $primary_docs, $disallowed, $curTabWin, $curTabIndex, $isel, $iwashere;
+	global $cache;
+	if (empty($disallowed[$name])) {
+		$id = $name . $primary_docs[$name][1];
+		if (is_numeric($subLevel) && $subLevel >= 0) $id = $id . '_' . $subLevel;
+		$href = $curTabWin . "-" . $curTabIndex;
+		if ($curTabIndex == 0) {
+			$isel[$curTabWin] = $name;
+
+			//echo "<!-- isel[" . $curTabWin . "]= " . $isel[$curTabWin] . "-->\n";
+			//echo "<!-- isel  = "; print_r($isel); echo "-->\n";
+			$iwashere++;
+		}
+		$curTabIndex++;
+		echo "<li><a href='#$href' id='$id' onclick=\"";
+		$frame = 'RTop';
+		$cache = $cache . "<div id=$href></div>\n";
+		echo "forceSpec(true,false);";
+		echo "return loadFrame2('$id', '$frame', '" . $primary_docs[$name][2] . "');\">" . $title . "</a></li>\n";
+	}
+}
 
 function genPopupsList($style='') {
   global $disallowed, $webserver_root;
@@ -1197,7 +1224,7 @@ if (!empty($reg)) {
       <?php genTreeLink('RTop','orp',xl('Pending Review')); ?>
       <?php genTreeLink('RTop','orr',xl('Patient Results')); ?>
       <?php genTreeLink('RTop','orb',xl('Batch Results')); ?>
-    </ul>
+	</ul>
   </li>
   <?php
   $newcrop_user_role=sqlQuery("select newcrop_user_role from users where username='".$_SESSION['authUser']."'");
@@ -1233,6 +1260,8 @@ if (!empty($reg)) {
       <?php if (acl_check('admin', 'super'    ) && $GLOBALS['enable_cdr']) genMiscLink('RTop','adm','0',xl('Rules'),'super/rules/index.php?action=browse!list'); ?>
       <?php if (acl_check('admin', 'super'    ) && $GLOBALS['enable_cdr']) genMiscLink('RTop','adm','0',xl('Alerts'),'super/rules/index.php?action=alerts!listactmgr'); ?>
       <?php if (acl_check('admin', 'super'    ) && $GLOBALS['enable_cdr']) genMiscLink('RTop','adm','0',xl('Patient Reminders'),'patient_file/reminder/patient_reminders.php?mode=admin&patient_id='); ?>
+      <!-- Ensoftek: interfax related changes -->
+      <?php if (acl_check('admin', 'super'    ) && $GLOBALS['enable_cdr']) genTreeTab('RTop','ivf',xl('Fax Center')); ?>
       <?php if ( ($GLOBALS['include_de_identification']) && (acl_check('admin', 'super'    )) ) genMiscLink('RTop','adm','0',xl('De Identification'),'de_identification_forms/de_identification_screen1.php'); ?>
           <?php if ( ($GLOBALS['include_de_identification']) && (acl_check('admin', 'super'    )) ) genMiscLink('RTop','adm','0',xl('Re Identification'),'de_identification_forms/re_identification_input_screen.php'); ?>
       <?php if (acl_check('admin', 'super') && !empty($GLOBALS['code_types']['IPPF'])) genMiscLink('RTop','adm','0',xl('Export'),'main/ippf_export.php'); ?>

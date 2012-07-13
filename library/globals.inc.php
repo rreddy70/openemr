@@ -1569,6 +1569,27 @@ $GLOBALS_METADATA = array(
       '30',
       xl('Rx Bottom Margin (px)')
     ),
-  ),    
+  ),   
+// Ensoftek: interfax related changes
+  'InterFax' => array(
+  	'enable_interfax' => array(
+      xl('Enable Fax'),
+      'bool',                           // data type
+      '0',
+      xl('Contact Ensoftek(drcloudemr@ensoftek.com) for any questions on the interfax service.')
+    ),
+    'interfax_user_id' => array(
+      xl('InterFAX ID'),
+      'text',                           // data type
+      '',
+      xl('Contact Ensoftek(drcloudemr@ensoftek.com) for any questions on the interfax service.')
+    ),
+     'interfax_user_pwd' => array(
+      xl('InterFAX Password'),
+      'pass',                         // data type
+      '',
+      xl('Contact Ensoftek(drcloudemr@ensoftek.com) for any questions on the interfax service.')
+    ),
+   ),  
 );
 ?>

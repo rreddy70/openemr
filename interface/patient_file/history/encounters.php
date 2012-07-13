@@ -106,6 +106,21 @@ function showDocument(&$drow) {
   echo "</tr>\n";
 }
 
+// Ensoftek: interfax related changes
+function showFax(&$frow) {
+  $faxdate = $frow['received_time'];
+  $fax_file=$frow['fax_file_name'];
+  $faxdate=date("Y/m/d",strtotime($faxdate));
+  echo "<tr class='text frow' onclick='incdovfdclick(\"$fax_file\")' >\n";
+
+  // show date
+  echo "<td>" . htmlspecialchars( oeFormatShortDate($faxdate), ENT_NOQUOTES) . "</td><td>&nbsp;</td>\n";
+
+   // show document name and category
+  echo "<td colspan='8'>".'Fax' . ": (". $frow['phone_number'].")  " . basename($fax_file) . '' ."</td>\n";
+  echo "</tr>\n";
+}
+
 function generatePageElement($start,$pagesize,$billing,$issue,$text)
 {
     if($start<0)
@@ -341,6 +356,10 @@ if (!$billing_view) {
   $query .= "ORDER BY d.docdate DESC, d.id DESC";
   $dres = sqlStatement($query, $queryarr);
   $drow = sqlFetchArray($dres);
+  // Ensoftek: interfax related changes
+  $fax_query = "SELECT received_time,fax_file_name,	phone_number FROM receive_fax WHERE PID=? ORDER BY received_time DESC";
+  $fres = sqlStatement($fax_query, $queryarr);
+  $frow = sqlFetchArray($fres);
 }
 
 // $count = 0;
@@ -720,6 +739,12 @@ while ($result4 = sqlFetchArray($res4)) {
 
 } // end while
 
+// Ensoftek: interfax related changes
+while ($frow)
+{ 
+    showFax($frow);
+    $frow = sqlFetchArray($fres);        	
+}
 if ($billing_view && $accounting_enabled && !$INTEGRATED_AR) SLClose();
 
 // Dump remaining document lines if count not exceeded.
@@ -740,6 +765,13 @@ while ($drow /* && $count <= $N */) {
 </body>
 
 <script language="javascript">
+// Ensoftek: interfax related changes
+function incdovfdclick(ffile) {
+	var loc='<?php echo $GLOBALS['webroot'] ?>';
+	cascwin(loc+'/interface/inter_fax/inter_fax_view.php?incomingfaxdoc=' + ffile, '_blank', 600, 475,
+	  "resizable=1,scrollbars=1");
+	 return false;
+	}
 // jQuery stuff to make the page a little easier to use
 
 $(document).ready(function(){

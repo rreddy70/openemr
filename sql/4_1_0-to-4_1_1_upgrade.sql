@@ -477,3 +477,45 @@ UPDATE `code_types` SET `ct_claim`='1' WHERE `ct_key`='ICD9' OR `ct_key`='CPT4' 
 UPDATE `code_types` SET `ct_fee`='0', `ct_mod`='0', `ct_label`='CPTII Performance Measures' WHERE `ct_key`='CPTII';
 #EndIf
 
+
+--Ensoftek: interfax related changes
+--Begin Fax tables
+#IfNotTable fax_details
+CREATE TABLE `fax_details` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `fax_number` varchar(250) NOT NULL,
+  `receiver` varchar(250) NOT NULL,
+  `subject` text,
+  `reply_address` varchar(50) DEFAULT NULL,
+  `attachment` varchar(100) DEFAULT NULL,
+  `status` varchar(250) NOT NULL,
+  `patient_id` int(11) DEFAULT NULL,
+  `facility_id` int(11) DEFAULT NULL,
+  `sender_id` int(11) DEFAULT NULL,
+  `transaction_id` varchar(20) DEFAULT NULL,
+  `send_date` datetime NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM  AUTO_INCREMENT=1 ;
+#EndIf
+
+#IfNotTable receive_fax
+CREATE TABLE `receive_fax` (
+  `message_id` int(11) NOT NULL,
+  `phone_number` varchar(20) DEFAULT NULL,
+  `status` varchar(20) DEFAULT NULL,
+  `message_type` varchar(50) DEFAULT NULL,
+  `remote_csid` int(11) DEFAULT NULL,
+  `pages` int(11) DEFAULT NULL,
+  `message_size` varchar(15) DEFAULT NULL,
+  `caller_id` varchar(20) DEFAULT NULL,
+  `message_recording_duration` time DEFAULT NULL,
+  `receiver_id` int(11) DEFAULT NULL,
+  `fax_file_name` varchar(100) DEFAULT NULL,
+  `read_fax` tinyint(4) NOT NULL DEFAULT '0',
+  `received_time` datetime NOT NULL,
+  `pid` bigint(20) DEFAULT NULL,
+  UNIQUE KEY `message_id` (`message_id`)
+) ENGINE=MyISAM  AUTO_INCREMENT=1 ;
+#EndIf
+
+-----End Fax tables

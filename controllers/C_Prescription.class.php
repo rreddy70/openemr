@@ -154,6 +154,8 @@ class C_Prescription extends Controller {
 	}
 
 	function edit_action_process() {
+	// Ensoftek: interfax related changes
+	$this->assign('enable_fax', $GLOBALS['enable_interfax']);
 		if ($_POST['process'] != "true")
 			return;
 		//print_r($_POST);
@@ -650,6 +652,10 @@ class C_Prescription extends Controller {
 				//$this->assign("process_result","No fax server is currently setup.");
 				return $this->_fax_prescription($p,$_POST['fax_to']);
 				break;
+		case xl("Send To Fax"): // Ensoftek: interfax related changes
+				$this->_state = false;
+				return $this->_send_fax_prescription($p, $dummy);
+				break;
 		case xl("Auto Send"):
 				$pharmacy_id = $_POST['pharmacy_id'];
 				//echo "auto sending to : " . $_POST['pharmacy_id'];
@@ -711,7 +717,158 @@ class C_Prescription extends Controller {
 		}
 		return;
 	}
+	
+	// Ensoftek: interfax related changes
+	function sent_action_process($id) {
+		$p = new Prescription($id);
+		require_once ($GLOBALS['fileroot'] . "/library/classes/class.ezpdf.php");
+		$pdf =& new Cezpdf($GLOBALS['oer_config']['prescriptions']['paper_size']);
+		$pdf->ezSetMargins($GLOBALS['oer_config']['prescriptions']['top']
+			,$GLOBALS['oer_config']['prescriptions']['bottom']
+			,$GLOBALS['oer_config']['prescriptions']['left']
+			,$GLOBALS['oer_config']['prescriptions']['right']
+		);
 
+		$pdf->selectFont($GLOBALS['fileroot'] . "/library/fonts/Helvetica.afm");
+
+		// Signature images are to be used only when faxing.
+		if(!empty($toFile)) $this->is_faxing = true;
+
+		$this->multiprint_header($pdf, $p);
+		$this->multiprint_body($pdf, $p);
+		$this->multiprint_footer($pdf);
+		
+		$pdfcode = $pdf->output();
+		$dir = $GLOBALS['fileroot'].'/sites/'.$_SESSION{"authProvider"}.'/documents/fax_docs/outgoing';
+	
+		//save the file
+		if (!file_exists($dir)){
+		mkdir ($dir,0777);
+		}
+		$fname = tempnam($dir.'/','PDF_').'.pdf';
+		$fp = fopen($fname,'w');
+		fwrite($fp,$pdfcode);
+		fclose($fp);
+		
+		
+		
+		
+		$filname=explode("\\", $fname);
+		$this->assign("current_pid",$_SESSION{"pid"});
+		$this->assign("pres_id", $id);
+		$this->assign("pdf_path", $fname);
+		$this->assign("pdf_name", array_pop($filname));
+		$this->assign("enable_fax", $enable_fax['gl_value']);
+		$this->display($GLOBALS['template_dir'] . "prescription/send_fax.html");
+		//return $fname;
+		
+		/*if(!empty($toFile)) {
+			$toFile = $pdf->ezOutput();
+		}
+		else {
+			$pdf->ezStream();
+			// $pdf->ezStream(array('compress' => 0)); // for testing with uncompressed output
+		}
+		return;*/
+	}
+	
+	// Ensoftek: interfax related changes
+	function post_fax_action_process($id) {
+	
+	if ($_POST['form_submit']) {
+		$date_time = date("YmdHis");
+		$dir = $GLOBALS['fileroot'].'/sites/'.$_SESSION{"authProvider"}.'/documents/fax_docs/outgoing';
+			
+			
+	if($_FILES["fax_file"]["name"] != '')
+		{
+			$file1 = $date_time."_".$_FILES['fax_file']['name'];
+			$str1 =  $dir.'/'.$file1;
+			$temp1 = $_FILES['fax_file']['tmp_name'];
+			move_uploaded_file($temp1,$str1);
+			$autosavefile=$str1;
+			$faxfileext=explode(".", $autosavefile);
+			$fileextention=array_pop($faxfileext);
+			unlink($_POST['pdfpath']);
+		}
+		else {
+			rename($_POST['pdfpath'],$dir.'/'.$date_time.'_'.'fax.pdf');
+			$autosavefile=$dir.'/'.$date_time.'_'.'fax.pdf';
+			$fileextention="pdf";
+		}
+		$key = md5('password');
+		$decrypted_value = Decrypt($GLOBALS['interfax_user_pwd'],$key);
+			$username = $GLOBALS['interfax_user_id']; // Enter your Interfax username here
+			$password = $decrypted_value; // Enter your Interfax password here
+			$faxnumbers = $_POST['fax_number'];  // Enter your designated fax number here in the format +[country code][area code][fax number], for example: +12125554874
+			$filename = $autosavefile; // A file in your filesystem
+			$filetype = $fileextention; // File format; supported types are listed at 
+			                   // http://www.interfax.net/en/help/supported_file_types 
+			$contacts = $_POST['to'];
+			$subject  = $_POST['subject'];
+			$replyemail = $_POST['reply_to_email'];
+			
+			// Open File
+			if( !($fp = fopen($filename, "r"))){
+			    // Error opening file
+			    echo "Error opening file";
+			    exit;
+			}
+			 
+			// Read data from the file into $data
+			$data = "";
+			while (!feof($fp)) $data .= fread($fp,1024);
+			fclose($fp);
+			 
+			 
+			$client = new SoapClient("http://ws.interfax.net/dfs.asmx?WSDL");
+			 
+			$params->Username  = $username;
+			$params->Password  = $password;
+			$params->FaxNumber = $faxnumbers;
+			$params->Contacts  =  $contacts;
+			$params->FileData  = $data;
+			$params->FileType  = $filetype;
+			$params->Subject           =  $subject;
+			$params->ReplyAddress      =  $replyemail;
+			 
+			$result = $client->Sendfax($params);
+			if($result->SendfaxResult<0) 
+			{
+				$Status = 'Failure';	
+				echo "<script language='JavaScript'>\n";
+				  echo "alert('Inputs are invalid');\n";
+				  echo "closeme(1);\n";
+				  echo "</script></body>\n";
+			}
+			else {
+				$Status = 'In Process';
+				$TransactionID = $result->SendfaxResult;
+				echo "<script language='JavaScript'>\n";
+				  echo "alert('Fax Sent Successfully');\n";
+				  echo "closeme(1);\n";
+				  echo "</script></body>\n";
+			}
+			$faxfilename=explode("/", $autosavefile);
+			
+		  $insert_id=sqlInsert("INSERT INTO fax_details SET " .
+		  "transaction_id = '"   .$TransactionID. "', " .
+		  "fax_number = '"         . trim($faxnumbers) . "', " .
+		  "receiver  = '"        . trim($contacts) . "', " .
+		  "subject = '"          . trim($subject) . "', " .
+		  "reply_address = '"       . trim($replyemail) . "', " .
+		  "attachment = '"         . trim(array_pop($faxfilename)) . "', " .
+		  "status = '"        . trim($result) . "', " .
+		  "patient_id = '"  . $_SESSION{"pid"} . "', " .
+		  "facility_id = '" . $_SESSION{"pc_facility"} . "', " .
+		  "sender_id = '"  . $_SESSION{"authId"} . "', " .
+		  "send_date = now()");
+				
+			 }
+
+ 
+	
+	}
         function _print_prescription_css($p, & $toFile) {
 
                 $this->multiprintcss_preheader();

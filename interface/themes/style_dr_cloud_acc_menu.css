@@ -1,0 +1,124 @@
+/* Accordion Menu Styles */
+/*
+#left_nav body {
+  font-size:8pt;
+  font-weight:normal;
+  text-decoration: none;
+  padding: 3px 3px 3px 3px;
+}
+#left_nav .smalltext {
+  font-family:sans-serif;
+  font-size:8pt;
+  font-weight:normal;
+  text-decoration: none;
+ }
+#left_nav a.navitem, a.navitem:visited {
+  color:#0000ff;
+  font-family:sans-serif;
+  font-size:8pt;
+ }
+*/
+/*
+#left_nav .inputtext {
+ font-size:8pt;
+ font-weight:normal;
+ text-decoration: none;
+ border-style:solid;
+ border-width:1px;
+ padding-left:4px;
+ padding-right:2px;
+ border-color: #000000;
+ background-color:transparent;
+}
+*/
+#left_nav ul.AccordionClass {
+	background-color:transparent;
+	list-style:none outside;
+	padding-left: 0em;
+	text-indent: 0em;
+	padding-top: 1px;
+	padding-bottom: 1px;
+	display: block;
+  	text-align: left;
+	overflow: hidden;
+}
+
+#left_nav ul.AccordionClass li { 
+	width: 168px;
+	display: block;
+	padding: 0;
+	border: 1px solid #88a;
+	padding: 0px;
+	margin-top: 0px;
+	margin-bottom: 0px;
+	padding-top: 0px;
+	padding-bottom: 0px;
+	color: black;
+/*	background-color: #edeaff;*/
+	background-color: #79b7e7;
+	-moz-border-radius: 3px;
+	-webkit-border-radius: 3px;
+	border-radius: 3px;
+}
+
+#left_nav ul.AccordionClass li a, #left_nav ul.AccordionClass li a:link, #left_nav ul.AccordionClass li a:visited {
+	text-decoration: none;
+	display: block;
+	padding: 3px;
+}
+#left_nav ul.AccordionClass li a:hover, #left_nav form ul.AccordionClass li:hover { 
+	text-decoration: none;
+	display:block;
+	background-color: #fff;
+}
+
+/* This is the "bar" on the left side of the submenu entries. */
+
+#left_nav ul.AccordionClass ul { 
+  	margin-left: 3px;
+	padding: 0px;
+}
+
+#left_nav ul.AccordionClass li ul li { 
+	width: 162px;
+	margin-bottom: 0; 
+	padding: 0px;
+	text-decoration: none;
+/*	background-color: #edeaff;*/
+}
+
+#left_nav ul.AccordionClass li ul li a, #left_nav ul.AccordionClass li ul li a:link, #left_nav ul.AccordionClass li ul li a:visited {
+	display:block; 
+	margin: 0px;
+	padding: 3px;
+	text-decoration: none;
+}
+#left_nav ul.AccordionClass li ul li a:hover, #left_nav ul.AccordionClass li ul li:hover {
+	display:block; 
+	text-decoration: none;
+	background-color: #e0d0f2;
+	background-color: #fff;
+}
+
+
+#left_nav ul.AccordionClass li ul li ul li { 
+	margin-bottom: 0; 
+	width: 155px;  
+	padding: 0px;
+/*	background-color: #e0ffff;*/
+}
+
+
+#left_nav ul.AccordionClass li ul li ul li a, #left_nav ul.AccordionClass ul ul li a:link, #left_nav ul.AccordionClass ul ul li a:visited { 
+	display:block; 
+	margin: 0px;
+	padding: 3px;
+	text-decoration: none;
+}
+#left_nav ul.AccordionClass ul ul li a:hover, #left_nav ul.AccordionClass ul ul li:hover {
+	display:block; 
+	text-decoration: none;
+	/*background-color: #c2eeff;*/
+	background-color: #fff;
+
+}
