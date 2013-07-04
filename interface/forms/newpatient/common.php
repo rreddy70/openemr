@@ -291,14 +291,24 @@ if ($fres) {
 ?>
      </td>
     </tr>
-
+<?php
+  /* Ensoftek -- Encounter Service Date modified to date with time */
+  $encDTArr = explode(" ",$result['date']);
+  $encServTime = $encDTArr[1];
+  $encServDate = $encDTArr[0];
+  $encDateTimeDisp = $result['date'];
+  if($encServTime == "00:00:00"){
+	$encDateTimeDisp = $encServDate;
+  }
+?>
     <tr>
      <td class='bold' nowrap><?php echo xlt('Date of Service:'); ?></td>
      <td class='text' nowrap>
+	 <!--Ensoftek -- Encounter Service Date modified to date with time -->
       <input type='text' size='10' name='form_date' id='form_date' <?php echo $disabled ?>
-       value='<?php echo $viewmode ? substr($result['date'], 0, 10) : date('Y-m-d'); ?>'
-       title='<?php echo xla('yyyy-mm-dd Date of service'); ?>'
-       onkeyup='datekeyup(this,mypcc)' onblur='dateblur(this,mypcc)' />
+       value='<?php echo $viewmode ? $encDateTimeDisp : date('Y-m-d H:i:s'); ?>'
+       title='<?php echo xla('yyyy-mm-dd hh:ii:ss Date of service'); ?>'
+       onkeyup='datekeyup(this,mypcc,true)' onblur='dateblur(this,mypcc,true)' />
         <img src='../../pic/show_calendar.gif' align='absbottom' width='24' height='22'
         id='img_form_date' border='0' alt='[?]' style='cursor:pointer;cursor:hand'
         title='<?php echo xla('Click here to choose a date'); ?>'>
@@ -393,7 +403,8 @@ while ($irow = sqlFetchArray($ires)) {
 
 <script language="javascript">
 /* required for popup calendar */
-Calendar.setup({inputField:"form_date", ifFormat:"%Y-%m-%d", button:"img_form_date"});
+/* Ensoftek -- Encounter Service Date modified to date with time */
+Calendar.setup({inputField:"form_date", ifFormat:"%Y-%m-%d %H:%M:%S", button:"img_form_date",showsTime:true});
 Calendar.setup({inputField:"form_onset_date", ifFormat:"%Y-%m-%d", button:"img_form_onset_date"});
 <?php
 if (!$viewmode) {

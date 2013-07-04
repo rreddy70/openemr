@@ -166,8 +166,8 @@ $result4 = sqlStatement("SELECT fe.encounter,fe.date,openemr_postcalendar_catego
 <?php } ?>
  top.restoreSession();
 <?php if ($GLOBALS['concurrent_layout']) { ?>
-<?php if ($mode == 'new') { ?>
- parent.left_nav.setEncounter(<?php echo "'" . oeFormatShortDate($date) . "', " . attr($encounter) . ", window.name"; ?>);
+<?php if ($mode == 'new') { $date_enc = date("Y-m-d", strtotime($_POST['form_date']));?>
+ parent.left_nav.setEncounter(<?php echo "'" . oeFormatShortDate($date_enc) . "', " . attr($encounter) . ", window.name"; ?>);
  parent.left_nav.setRadio(window.name, 'enc');
 <?php } // end if new encounter ?>
  parent.left_nav.loadFrame('enc2', window.name, '<?php echo $nexturl; ?>');

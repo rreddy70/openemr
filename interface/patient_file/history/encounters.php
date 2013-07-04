@@ -403,7 +403,17 @@ while ($result4 = sqlFetchArray($res4)) {
 
         $raw_encounter_date = '';
 
-        $raw_encounter_date = date("Y-m-d", strtotime($result4{"date"}));
+        //$raw_encounter_date = date("Y-m-d", strtotime($result4{"date"}));
+		
+		//Ensoftek -- Encounter service date and time display placed 
+		$encDTArr = explode(" ",$result4['date']);
+		$encServTime = $encDTArr[1];
+		$encServDate = $encDTArr[0];
+		$raw_encounter_date = $result4['date'];
+		if($encServTime == "00:00:00"){
+			$raw_encounter_date = $encServDate;
+		}
+		
         $encounter_date = date("D F jS", strtotime($result4{"date"}));
 
         // if ($auth_notes_a || ($auth_notes && $result4['user'] == $_SESSION['authUser']))
