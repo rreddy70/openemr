@@ -5989,3 +5989,79 @@ CREATE TABLE `esign_signatures` (
   KEY `table` (`table`)
 ) ENGINE=InnoDB AUTO_INCREMENT=1 ;
 
+
+--Added new Fields for a13-Family health history
+	ALTER TABLE `history_data` ADD `dc_father` text NOT NULL DEFAULT '';
+
+	ALTER TABLE `history_data` ADD `dc_mother` text NOT NULL DEFAULT '';
+
+	ALTER TABLE `history_data` ADD `dc_siblings` text NOT NULL DEFAULT '';
+
+	ALTER TABLE `history_data` ADD `dc_spouse` text NOT NULL DEFAULT '';
+
+	ALTER TABLE `history_data` ADD `dc_offspring` text NOT NULL DEFAULT '';
+
+	INSERT INTO `layout_options` (`form_id`, `field_id`, `group_name`, `title`, `seq`, `data_type`, `uor`, `fld_length`, `max_length`, `list_id`, `titlecols`, `datacols`, `default_value`, `edit_options`, `description`, `fld_rows`, `list_backup_id`) VALUES ('HIS', 'dc_father', '2Family History', 'Diagnosis Code', 2, 15, 1, 0, 255, '', 1, 1, '', '', '', 0, '');
+        UPDATE `layout_options` SET `seq` = '3' WHERE `layout_options`.`form_id` = 'HIS' AND `layout_options`.`field_id` = 'history_mother';
+
+	INSERT INTO `layout_options` (`form_id`, `field_id`, `group_name`, `title`, `seq`, `data_type`, `uor`, `fld_length`, `max_length`, `list_id`, `titlecols`, `datacols`, `default_value`, `edit_options`, `description`, `fld_rows`, `list_backup_id`) VALUES ('HIS', 'dc_mother', '2Family History', 'Diagnosis Code', 4, 15, 1, 0, 255, '', 1, 1, '', '', '', 0, '');
+        UPDATE `layout_options` SET `seq` = '5' WHERE `layout_options`.`form_id` = 'HIS' AND `layout_options`.`field_id` = 'history_siblings';
+
+	INSERT INTO `layout_options` (`form_id`, `field_id`, `group_name`, `title`, `seq`, `data_type`, `uor`, `fld_length`, `max_length`, `list_id`, `titlecols`, `datacols`, `default_value`, `edit_options`, `description`, `fld_rows`, `list_backup_id`) VALUES ('HIS', 'dc_siblings', '2Family History', 'Diagnosis Code', 6, 15, 1, 0, 255, '', 1, 1, '', '', '', 0, '');
+        UPDATE `layout_options` SET `seq` = '7' WHERE `layout_options`.`form_id` = 'HIS' AND `layout_options`.`field_id` = 'history_spouse';
+
+	INSERT INTO `layout_options` (`form_id`, `field_id`, `group_name`, `title`, `seq`, `data_type`, `uor`, `fld_length`, `max_length`, `list_id`, `titlecols`, `datacols`, `default_value`, `edit_options`, `description`, `fld_rows`, `list_backup_id`) VALUES ('HIS', 'dc_spouse', '2Family History', 'Diagnosis Code', 8, 15, 1, 0, 255, '', 1, 1, '', '', '', 0, '');
+        UPDATE `layout_options` SET `seq` = '9' AND `datacols` = '1' WHERE `layout_options`.`form_id` = 'HIS' AND `layout_options`.`field_id` = 'history_offspring';
+
+	INSERT INTO `layout_options` (`form_id`, `field_id`, `group_name`, `title`, `seq`, `data_type`, `uor`, `fld_length`, `max_length`, `list_id`, `titlecols`, `datacols`, `default_value`, `edit_options`, `description`, `fld_rows`, `list_backup_id`) VALUES ('HIS', 'dc_offspring', '2Family History', 'Diagnosis Code', 10, 15, 1, 0, 255, '', 1, 3, '', '', '', 0, '');
+
+
+-- d4-Amendments
+	INSERT INTO globals ( gl_name, gl_index, gl_value ) VALUES ( 'amendments', 0, '0' );
+
+	INSERT INTO `list_options` ( `list_id`, `option_id`, `title`, `seq`, `is_default` ) 
+	VALUES ('lists' ,'amendment_status','Amendment Status', 102, 0);
+
+	INSERT INTO `list_options` ( `list_id`, `option_id`, `title`, `seq`, `is_default` ) VALUES
+	('amendment_status' ,'1','Approved', 1, 0),
+	('amendment_status' ,'2','Rejected', 2, 0);
+	
+	INSERT INTO `list_options` ( `list_id`, `option_id`, `title`, `seq`, `is_default` ) 
+	VALUES ('lists' ,'amendment_from','Amendment From', 102, 0);
+
+	INSERT INTO `list_options` ( `list_id`, `option_id`, `title`, `seq`, `is_default` ) VALUES
+	('amendment_from' ,'1','Patient', 1, 0),
+	('amendment_from' ,'2','Insurance', 2, 0);
+
+	CREATE TABLE IF NOT EXISTS `amendments` (
+		`amendment_id`	int(11)			NOT NULL AUTO_INCREMENT COMMENT 'Amendment ID',
+		`amendment_date` date			NOT NULL	COMMENT 'Amendement request date',
+		`amendment_by`	varchar(50)		NOT NULL	COMMENT 'Amendment requested from',
+		`amendment_status` varchar(50)	NULL		COMMENT 'Amendment status accepted/rejected/null',
+		`pid`			int(11)			NOT NULL	COMMENT 'Patient ID from patient_data',
+		`amendment_desc` text			NOT NULL	COMMENT 'Amendment Details',
+		`created_by`	int(11)			NOT NULL	COMMENT 'references users.id for session owner',
+		`modified_by`	int(11)			NULL		COMMENT 'references users.id for session owner',
+		`created_time`	timestamp		NOT NULL	COMMENT 'created time',
+		`modified_time`	timestamp		NULL		COMMENT 'modified time',
+		PRIMARY KEY amendments_id(`amendment_id`),
+		KEY amendment_pid(`pid`)
+	) ENGINE = MyISAM;
+
+	CREATE TABLE IF NOT EXISTS `amendments_history` (
+		`amendment_id`	int(11)			NOT NULL AUTO_INCREMENT COMMENT 'Amendment ID',
+		`amendment_note` text			NOT NULL	COMMENT 'Amendment requested from',
+		`created_by`	int(11)			NOT NULL	COMMENT 'references users.id for session owner',
+		`created_time`	timestamp		NOT NULL	COMMENT 'created time',
+		KEY amendment_history_id(`amendment_id`)
+	) ENGINE = MyISAM;
+
+	ALTER TABLE `amendments_history` ADD `amendment_status` VARCHAR(50) NULL COMMENT 'Amendment Request Status' AFTER  `amendment_note`;
+	
+	CREATE TABLE IF NOT EXISTS `log_comment_encrypt` (
+	  `id` int(11) NOT NULL AUTO_INCREMENT,
+	  `log_id` int(11) NOT NULL,
+	  `encrypt` enum('Yes','No') NOT NULL DEFAULT 'No',
+	  `checksum` longtext NOT NULL,
+	  PRIMARY KEY (`id`)
+	) ENGINE=InnoDB;
